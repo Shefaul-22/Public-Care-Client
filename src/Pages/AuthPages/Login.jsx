@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import SocialLogin from '../../components/Shared/SocialLogin';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
+import Logo from '../../components/Shared/Logo';
 
 const Login = () => {
 
     const [showPassword, setShowPassword] = useState(false)
 
     const {register, handleSubmit, formState: {errors}} = useForm();
+
+    const location = useLocation()
+    console.log("In login page", location);
 
     const handleLogin = (data) => {
         console.log("After login ", data);
@@ -18,16 +22,18 @@ const Login = () => {
     return (
         <div >
 
-            <div className='space-y-2 mb-5 md:7'>
+            <Logo></Logo>
+
+            <div className='space-y-2 my-5 md:7'>
                 <h2 className='font-extrabold text-2xl md:text-4xl'>Welcome Back</h2>
-                <p>Login with PublicCare</p>
+                <p>Login with CivicCare</p>
             </div>
 
             <form onSubmit={handleSubmit(handleLogin)}>
                 <fieldset className="fieldset">
 
                     {/* email */}
-                    <label className="label font-medium text-[14px]">Email</label>
+                    <label className="label font-medium text-gray-700 text-[14px]">Email</label>
                     <input type="email" className="input w-full md:w-2/3"
                         {...register('email', { required: true })}
                         placeholder="example@email.com" />
@@ -38,7 +44,7 @@ const Login = () => {
 
 
                     {/* password */}
-                    <label className="label font-medium text-[14px]">Password</label>
+                    <label className="label font-medium text-gray-700 text-[14px]">Password</label>
                     <div className="relative w-full md:w-2/3">
                         <input
                             type={showPassword ? "text" : "password"}
@@ -72,16 +78,16 @@ const Login = () => {
                         errors.password?.type === 'pattern' && <p className='text-red-500'>Password must include uppercase, lowercase, number & special character</p>
                     }
                     <div><a className="link link-hover">Forgot password?</a></div>
-                    <button className="btn bg-primary font-semibold mt-4 w-full md:w-2/3">Login</button>
+                    <button className="btn bg-primary text-white font-semibold mt-4 w-full md:w-2/3">Login</button>
                 </fieldset>
             </form>
 
             <div className='w-full md:w-2/3 my-2'>
-                <p>New to PercelX? <Link state={location.state}
+                <p>New to CivicCare? <Link state={location.state}
 
                     to="/register"
                     className='text-blue-500 text-[18px] underline mb-2'>Register</Link></p>
-                <p className='text-center text-xl'>Or</p>
+                <p className='text-center text-xl font-semibold'>OR</p>
             </div>
 
             <SocialLogin></SocialLogin>

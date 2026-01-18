@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router';
 import SocialLogin from '../../components/Shared/SocialLogin';
+import Logo from '../../components/Shared/Logo';
 
 
 const Register = () => {
@@ -19,15 +20,18 @@ const Register = () => {
     }
     return (
         <div>
-            <div className='space-y-2 mb-5 md:7'>
+
+            <Logo></Logo>
+
+            <div className='space-y-2 my-5 md:7'>
                 <h2 className='font-extrabold text-2xl md:text-4xl'>Create an Account</h2>
-                <p>Register with PublicCare</p>
+                <p>Register with CivicCare</p>
             </div>
             <form onSubmit={handleSubmit(handleRegister)}>
                 <fieldset className="fieldset">
 
                     {/* Name */}
-                    <label className="label font-medium text-[14px]">Name</label>
+                    <label className="label font-medium text-gray-700  text-[14px]">Name</label>
                     <input type="text" className="input w-full md:w-2/3"
                         {...register('name', { required: true })}
                         placeholder="Your name" />
@@ -37,7 +41,7 @@ const Register = () => {
                     )}
 
                     {/* Photo image field */}
-                    <label className="label font-medium text-[14px]">Upload a image</label>
+                    <label className="label font-medium text-gray-700 text-[14px]">Upload a image</label>
 
                     <input type="file" className="file-input w-full md:w-2/3"
                         {...register('photo')}
@@ -48,7 +52,7 @@ const Register = () => {
                     )}
 
                     {/* email */}
-                    <label className="label font-medium text-[14px]">Email</label>
+                    <label className="label font-medium text-gray-700 text-[14px]">Email</label>
                     <input type="email" className="input w-full md:w-2/3"
                         {...register('email', { required: true })}
                         placeholder="example@email.com" />
@@ -59,7 +63,7 @@ const Register = () => {
 
 
                     {/* password */}
-                    <label className="label font-medium text-[14px]">Password</label>
+                    <label className="label font-medium text-gray-700 text-[14px]">Password</label>
                     <div className="relative w-full md:w-2/3">
                         <input
                             type={showPassword ? "text" : "password"}
@@ -93,7 +97,7 @@ const Register = () => {
                         errors.password?.type === 'pattern' && <p className='text-red-500'>Password must include uppercase, lowercase, number & special character</p>
                     }
 
-                    <button className="btn bg-primary font-semibold mt-4 w-full md:w-2/3" >Register</button>
+                    <button className="btn bg-primary text-white font-semibold mt-4 w-full md:w-2/3" >Register</button>
                 </fieldset>
 
             </form>
@@ -106,7 +110,7 @@ const Register = () => {
                     state={location.state}
 
                     to="/login" className='text-blue-500 text-[18px] underline mb-2'>Login</Link></p>
-                <p className='text-center text-xl'>Or</p>
+                <p className='text-center text-xl font-semibold'>OR</p>
             </div>
 
             <SocialLogin></SocialLogin>

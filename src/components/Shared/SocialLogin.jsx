@@ -10,7 +10,7 @@ const SocialLogin = () => {
     return (
         <div className='w-full md:w-2/3'>
 
-            <button onClick={handleGoogleLogin} className="btn w-full bg-[#E9ECF1] text-black border-[#e5e5e5]">
+            <button onClick={handleGoogleLogin} className="btn w-full bg-[#d4d7dd] text-black border-[#e5e5e5]">
                 <FcGoogle size={22}></FcGoogle>
                 Sign In with Google
             </button>

@@ -4,6 +4,9 @@ import HomePage from "../Pages/Home/HomePage";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../Pages/AuthPages/Login";
 import Register from "../Pages/AuthPages/Register";
+import AllIssues from "../Pages/AllIssues/AllIssues";
+import Services from "../Pages/Services/Services";
+import AboutUs from "../Pages/AboutUs/AboutUs";
 
 
 export const router = createBrowserRouter([
@@ -15,6 +18,18 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 Component: HomePage
+            },
+            {
+                path: "allIssues",
+                Component: AllIssues
+            },
+            {
+                path: "services",
+                Component: Services
+            },
+            {
+                path: "aboutUs",
+                Component: AboutUs
             }
         ]
     },
