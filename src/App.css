@@ -2,7 +2,8 @@
 
 @import "tailwindcss";
 
-@plugin "daisyui"
+@plugin "daisyui";
+
 
 
 /* body {
