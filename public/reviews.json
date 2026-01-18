@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "userName": "Rahim Uddin",
+    "userEmail": "rahim.uddin@gmail.com",
+    "userCity": "Dhaka",
+    "userPhotoUrl": "https://randomuser.me/api/portraits/men/32.jpg",
+    "rating": 5,
+    "review": "CivicCare has made reporting local infrastructure problems extremely easy. I reported a broken streetlight in my area and received updates at every stage. The transparency and quick response from the authorities really impressed me. This platform truly empowers citizens."
+  },
+  {
+    "id": "2",
+    "userName": "Nusrat Jahan",
+    "userEmail": "nusrat.jahan@yahoo.com",
+    "userCity": "Chattogram",
+    "userPhotoUrl": "https://randomuser.me/api/portraits/women/45.jpg",
+    "rating": 4,
+    "review": "Previously, reporting municipal issues felt pointless. With CivicCare, I can submit issues with photos and track progress easily. The system feels modern, reliable, and user-friendly. It creates a strong connection between citizens and city authorities."
+  },
+  {
+    "id": "3",
+    "userName": "Tanvir Hasan",
+    "userEmail": "tanvir.hasan@outlook.com",
+    "userCity": "Rajshahi",
+    "userPhotoUrl": "https://randomuser.me/api/portraits/men/18.jpg",
+    "rating": 5,
+    "review": "I really appreciate how organized CivicCare is. From reporting potholes to tracking resolution status, everything is clear and transparent. The notifications keep me informed, and the overall experience feels professional and efficient."
+  },
+  {
+    "id": "4",
+    "userName": "Farzana Akter",
+    "userEmail": "farzana.akter@gmail.com",
+    "userCity": "Khulna",
+    "userPhotoUrl": "https://randomuser.me/api/portraits/women/22.jpg",
+    "rating": 4,
+    "review": "CivicCare has improved how local issues are handled in our community. The ability to upload photos, add locations, and receive updates makes the system very trustworthy. It gives citizens confidence that their concerns are actually being addressed."
+  },
+  {
+    "id": "5",
+    "userName": "Imran Hossain",
+    "userEmail": "imran.hossain@mail.com",
+    "userCity": "Sylhet",
+    "userPhotoUrl": "https://randomuser.me/api/portraits/men/54.jpg",
+    "rating": 5,
+    "review": "This platform is a great step toward smarter city management. CivicCare reduces response time and improves accountability. I especially like the clear status tracking system, which helps citizens stay informed and involved throughout the resolution process."
+  }
+]
