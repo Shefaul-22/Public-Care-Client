@@ -2,22 +2,38 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import SocialLogin from '../../components/Shared/SocialLogin';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import Logo from '../../components/Shared/Logo';
+import UseAuth from '../../hooks/UseAuth';
 
 const Login = () => {
 
     const [showPassword, setShowPassword] = useState(false)
 
-    const {register, handleSubmit, formState: {errors}} = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const location = useLocation()
-    console.log("In login page", location);
+    const navigate = useNavigate()
+
+    const { signInUser } = UseAuth();
+
+    const location = useLocation();
+    console.log('in the login', location)
+
+   
 
     const handleLogin = (data) => {
-        console.log("After login ", data);
-    }
+        // console.log("data after login ", data);
 
+        signInUser(data.email, data.password)
+            .then(result => {
+                console.log(result.user);
+                navigate(location?.state || '/');
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+    }
 
     return (
         <div >

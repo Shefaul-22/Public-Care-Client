@@ -1,23 +1,91 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import SocialLogin from '../../components/Shared/SocialLogin';
 import Logo from '../../components/Shared/Logo';
+import UseAuth from '../../hooks/UseAuth';
+import axios from 'axios';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 
 const Register = () => {
 
     const [showPassword, setShowPassword] = useState(false)
+    const { registerUser, UpdateUserProfile } = UseAuth();
 
     const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const navigate = useNavigate();
+    const axiosSecure = useAxiosSecure();
 
     const location = useLocation();
     console.log("In register page ", location);
 
     const handleRegister = (data) => {
-        console.log(data);
+
+        // console.log("after register", data);
+        // console.log("after register", data, data.photo[0]);
+        const profileImg = data.photo[0];
+
+        registerUser(data.email, data.password)
+            .then(result => {
+                console.log(result.user);
+                // store the image and get the photo url
+                const formData = new FormData();
+                formData.append('image', profileImg)
+
+                const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`
+
+                axios.post(image_API_URL, formData)
+                    .then(res => {
+
+                        const photoURL = res.data.data.url;
+                        console.log(photoURL);
+
+                        // create user in the database
+                        const userInfo = {
+                            email: data.email,
+                            displayName: data.name,
+                            photoURL: photoURL
+                        }
+                        axiosSecure.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user created in the database', res.data);
+                                }
+                            })
+
+
+                        // console.log('after image upload', res);
+                        // console.log('after image upload', res.data.data.url);
+                        // update the user profile
+                        const userProfile = {
+                            displayName: data.name,
+                            photoURL: photoURL,
+                        }
+
+                        UpdateUserProfile(userProfile)
+                            .then(() => {
+                                console.log('userProfile updated done');
+                                navigate("/login", {
+                                    state: location.state
+                                });
+                            })
+                            .catch(error => {
+                                console.log(error)
+                            })
+                    })
+
+
+
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
     }
+
     return (
         <div>
 
