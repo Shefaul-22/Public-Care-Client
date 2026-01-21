@@ -7,8 +7,8 @@ import Register from "../Pages/AuthPages/Register";
 import AllIssues from "../Pages/AllIssues/AllIssues";
 import Services from "../Pages/Services/Services";
 import AboutUs from "../Pages/AboutUs/AboutUs";
-import PostIssue from "../Pages/PostIssue/PostIssue";
 import PrivateRoute from "./PrivateRoute";
+import ReportIssue from "../Pages/ReportIssue/ReportIssue";
 
 
 export const router = createBrowserRouter([
@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
 
             {
                 path: "post-issue",
-                element: <PrivateRoute><PostIssue></PostIssue></PrivateRoute>,
+                element: <PrivateRoute><ReportIssue></ReportIssue></PrivateRoute>,
                 loader: () => fetch('/serviceCenter.json').then(res => res.json())
             }
         ]

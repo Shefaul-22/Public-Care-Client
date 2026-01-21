@@ -57,7 +57,7 @@ const Navbar = () => {
                 : "text-gray-800 hover:text-blue-600"
             }`
 
-        }>PostIssue</NavLink>
+        }>ReportAnIssue</NavLink>
 
         <NavLink to="/aboutUs" className={({ isActive }) =>
             `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
