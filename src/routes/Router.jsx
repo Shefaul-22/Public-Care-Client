@@ -9,6 +9,8 @@ import Services from "../Pages/Services/Services";
 import AboutUs from "../Pages/AboutUs/AboutUs";
 import PrivateRoute from "./PrivateRoute";
 import ReportIssue from "../Pages/ReportIssue/ReportIssue";
+import DashboardLayout from "../layouts/DashboardLayout";
+import DashboardHome from "../Pages/DashboardRelated/DashboardHome/DashboardHome";
 
 
 export const router = createBrowserRouter([
@@ -59,5 +61,20 @@ export const router = createBrowserRouter([
             }
         ]
 
+    },
+
+    // Dashboard related
+
+    {
+        path: "dashboard",
+        element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+        children: [
+
+            {
+                index: true,
+                Component: DashboardHome
+
+            }
+        ]
     }
 ])

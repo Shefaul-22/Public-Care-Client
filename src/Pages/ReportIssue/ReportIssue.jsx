@@ -43,6 +43,7 @@ const ReportIssue = () => {
 
                 {/* report details, name, photo */}
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-12 my-8'>
+                
                     <fieldset className="fieldset">
                         <label className="label">Issue Name</label>
                         <input type="text" {...register('issueName', { required: true })} className="input w-full" placeholder="Issue Name" />
