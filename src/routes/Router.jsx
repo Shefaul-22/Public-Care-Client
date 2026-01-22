@@ -11,6 +11,8 @@ import PrivateRoute from "./PrivateRoute";
 import ReportIssue from "../Pages/ReportIssue/ReportIssue";
 import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../Pages/DashboardRelated/DashboardHome/DashboardHome";
+import MyReports from "../Pages/DashboardRelated/MyReports/MyReports";
+import PaymentHistory from "../Pages/DashboardRelated/PaymentHistory/PaymentHistory";
 
 
 export const router = createBrowserRouter([
@@ -74,6 +76,15 @@ export const router = createBrowserRouter([
                 index: true,
                 Component: DashboardHome
 
+            },
+            {
+                path: "my-reports",
+                Component: MyReports
+            },
+
+            {
+                path: "payment-history",
+                Component: PaymentHistory
             }
         ]
     }
