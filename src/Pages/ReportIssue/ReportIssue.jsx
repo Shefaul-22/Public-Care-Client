@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import UseAuth from '../../hooks/UseAuth';
 
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
+// import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 
 const ReportIssue = () => {
@@ -14,8 +18,25 @@ const ReportIssue = () => {
         formState: { errors }
     } = useForm();
     const { user } = UseAuth();
-    // const axiosSecure = useAxiosSecure();
-    // const navigate = useNavigate();
+
+    const email = user.email;
+
+    const [issueCount, setIssueCount] = useState(0);
+    const [role, setRole] = useState('');
+
+    useEffect(() => {
+        if (user?.email) {
+            axiosSecure.get(`/users/${user.email}/issues/count`)
+                .then(res => {
+                    setIssueCount(res.data.count);
+                    setRole(res.data.role);
+                })
+                .catch(err => console.error(err));
+        }
+    }, [email]);
+
+    const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
     const serviceCenters = useLoaderData();
     const regionsDuplicate = serviceCenters.map(c => c.region);
@@ -31,10 +52,108 @@ const ReportIssue = () => {
         return districts;
     }
 
-    const handleReportIssue = (data) => {
-        console.log(data);
-    }
+    // const handleReportIssue = async (data) => {
+    //     // console.log(data);
 
+
+    //     try {
+
+    //         const issueImg = data.image[0];
+
+    //         const formData = new FormData();
+    //         formData.append('image', issueImg)
+
+    //         const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`
+
+    //         await axios.post(image_API_URL, formData)
+    //             .then(res => {
+
+    //                 const photoURL = res.data.data.url;
+    //                 console.log(photoURL);
+
+    //                 const issueInfo = {
+    //                     issueName: data.issueName,
+    //                     category: data.category,
+    //                     issueDescription: data.issueDescription,
+    //                     photoURL: photoURL,
+    //                     senderName: data.senderName,
+    //                     senderEmail: data.senderEmail,
+    //                     senderRegion: data.senderRegion,
+    //                     senderDistrict: data.senderDistrict,
+    //                     senderAddress: data.senderAddress,
+    //                 }
+
+    //                 const res = await axiosSecure.post('/issues', issueInfo)
+
+    //                 console.log('after saving parcel', res.data);
+    //                 if (res.data.insertedId) {
+    //                     navigate('/dashboard/my-issues')
+    //                     Swal.fire({
+    //                         position: "top-end",
+    //                         icon: "success",
+    //                         title: "Issue has created. Please Pay to Boost",
+    //                         showConfirmButton: true,
+    //                         timer: 2000
+    //                     });
+    //                 }
+
+    //             })
+    //     }
+    //     catch (error) {
+    //         console.error(error);
+    //         Swal.fire("Error", "Something went wrong", "error");
+    //     }
+
+    // };
+
+
+    const handleReportIssue = async (data) => {
+        try {
+            const issueImg = data.image[0];
+
+            const formData = new FormData();
+            formData.append('image', issueImg);
+
+            const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`;
+
+            // Upload image on imagebb
+            const imgRes = await axios.post(image_API_URL, formData);
+            const photoURL = imgRes.data.data.url;
+
+
+            const issueInfo = {
+                issueName: data.issueName,
+                category: data.category,
+                issueDescription: data.issueDescription,
+                photoURL,
+                senderName: data.senderName,
+                senderEmail: data.senderEmail,
+                senderRegion: data.senderRegion,
+                senderDistrict: data.senderDistrict,
+                senderAddress: data.senderAddress,
+            };
+
+            // Save issue to DB
+            const res = await axiosSecure.post('/issues', issueInfo);
+
+            if (res.data.insertedId) {
+                navigate('/dashboard/my-issues');
+                Swal.fire({
+                    // position: "top-end",
+                    icon: "success",
+                    title: "Issue has been created successfully",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+
+        } catch (error) {
+            console.error(error);
+
+            Swal.fire("Error", "Something went wrong! Try Again.", "error");
+
+        }
+    };
 
     return (
         <div>
@@ -46,7 +165,7 @@ const ReportIssue = () => {
 
                     <fieldset className="fieldset">
                         <label className="label">Issue Name</label>
-                        <input type="text" {...register('issueName', { required: true })} className="input w-full" placeholder="Issue Name" />
+                        <input type="text" {...register('issueName', { required: true })} className="input w-full file-input-primary" placeholder="Issue Name" />
 
                         {errors.issueName?.type === "required" && (
                             <p className='text-red-500'>Issue Name is required</p>
@@ -54,11 +173,11 @@ const ReportIssue = () => {
 
                         {/* select a category */}
                         <fieldset className="fieldset">
-                            <legend className="fieldset-legend">Issue Category</legend>
+                            <legend className=" label">Issue Category</legend>
 
                             <select {...register('category', { required: "Category is required" })}
 
-                                defaultValue="" className="select w-full">
+                                defaultValue="" className="select w-full file-input-primary">
 
                                 <option value="" disabled>Pick a Category</option>
                                 <option value="Broken streetlights">Broken streetlights</option>
@@ -66,7 +185,7 @@ const ReportIssue = () => {
                                 <option value="Water leakage">Water leakage</option>
                                 <option value="Garbage overflow">Garbage overflow</option>
                                 <option value="Damage footpaths">Damage footpaths</option>
-                                
+
                             </select>
 
                             {errors.category && (
@@ -77,7 +196,7 @@ const ReportIssue = () => {
                         </fieldset>
                         {/* Issue description */}
                         <fieldset className='fieldset'>
-                            <legend className="fieldset-legend">Issue Details</legend>
+                            <legend className="label">Issue Details</legend>
                             <textarea {...register('issueDescription')} placeholder="Write issue description here..." className="textarea textarea-primary w-full"></textarea>
 
 
@@ -113,18 +232,18 @@ const ReportIssue = () => {
                         <label className="label">Sender Name</label>
                         <input type="text" {...register('senderName')}
                             defaultValue={user?.displayName}
-                            className="input w-full" placeholder="Sender Name" />
+                            className="input w-full file-input-primary" placeholder="Sender Name" />
 
                         {/* sender email */}
                         <label className="label">Sender Email</label>
                         <input type="text" {...register('senderEmail')}
                             defaultValue={user?.email}
-                            className="input w-full" placeholder="Sender Email" />
+                            className="input w-full file-input-primary" placeholder="Sender Email" />
 
                         {/* sender region */}
                         <fieldset className="fieldset " >
                             <legend className="fieldset-legend">Sender Regions</legend>
-                            <select {...register('senderRegion', { required: true })} defaultValue="Pick a region" className="select w-full">
+                            <select {...register('senderRegion', { required: true })} defaultValue="Pick a region" className="select w-full file-input-primary">
                                 <option disabled={true}>Pick a region</option>
                                 {
                                     regions.map((r, i) => <option key={i} value={r}>{r}</option >)
@@ -140,7 +259,7 @@ const ReportIssue = () => {
                             <legend className="fieldset-legend">Sender Districts</legend>
                             <select {...register('senderDistrict', {
                                 required: "Sender district is required"
-                            })} defaultValue="Pick a district" className="select w-full" required>
+                            })} defaultValue="Pick a district" className="select w-full file-input-primary" required>
 
                                 <option disabled={true}>Pick a district</option>
 
@@ -157,14 +276,41 @@ const ReportIssue = () => {
 
                         {/* sender address */}
                         <label className="label mt-4">Sender Address</label>
-                        <input type="text" {...register('senderAddress')} className="input w-full" placeholder="Sender Address" />
+                        <input type="text" {...register('senderAddress')} className="input w-full file-input-primary" placeholder="Sender Address" />
 
 
                     </fieldset>
 
                 </div>
 
-                <input type="submit" className='btn btn-primary mt-8 text-white' value="Send Issue" />
+                {/* <input type="submit" className='btn btn-primary mt-8 text-white' value="Send Issue" /> */}
+
+                <div className="relative inline-block group">
+                    <input
+                        type="submit"
+                        className='btn btn-primary mt-8 text-white disabled:cursor-not-allowed'
+                        value="Send Issue"
+                        disabled={role !== 'premium' && issueCount >= 3}
+                    />
+
+                    {role !== 'premium' && issueCount >= 3 && (
+                        <span className="absolute left-42 -translate-x-1/2 -top-1 w-max bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                            Free users can submit up to 3 issues. Upgrade to Premium.
+                        </span>
+                    )}
+                </div>
+
+                {role !== 'premium' && issueCount >= 3 && (
+                    <button
+                        type="button"
+                        className="btn btn-warning ml-5 mt-8"
+                        onClick={() => navigate('/profile')}
+                    >
+                        Upgrade to Premium
+                    </button>
+                )}
+
+
 
             </form>
         </div>

@@ -13,6 +13,8 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../Pages/DashboardRelated/DashboardHome/DashboardHome";
 import MyReports from "../Pages/DashboardRelated/MyReports/MyReports";
 import PaymentHistory from "../Pages/DashboardRelated/PaymentHistory/PaymentHistory";
+import ProfilePage from "../Pages/ProfilePage/ProfilePage";
+import UpdateProfile from "../Pages/UpdateProfile/UpdateProfile";
 
 
 export const router = createBrowserRouter([
@@ -42,6 +44,15 @@ export const router = createBrowserRouter([
                 path: "post-issue",
                 element: <PrivateRoute><ReportIssue></ReportIssue></PrivateRoute>,
                 loader: () => fetch('/serviceCenter.json').then(res => res.json())
+            },
+
+            {
+                path: "profile",
+                element: <PrivateRoute><ProfilePage></ProfilePage></PrivateRoute>
+            },
+            {
+                path: "updateProfile",
+                element: <PrivateRoute><UpdateProfile></UpdateProfile></PrivateRoute>
             }
         ]
     },
@@ -78,7 +89,7 @@ export const router = createBrowserRouter([
 
             },
             {
-                path: "my-reports",
+                path: "my-issues",
                 Component: MyReports
             },
 

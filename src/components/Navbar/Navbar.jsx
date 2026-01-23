@@ -127,6 +127,10 @@ const Navbar = () => {
                                     </span>
                                 </li>
 
+                                <Link to="/profile" className="btn btn-error btn-sm w-full text-white mb-3">
+                                    Profile
+                                </Link>
+
                                 <Link to="/dashboard" className="btn btn-error btn-sm w-full text-white mb-3">
                                     Dashboard
                                 </Link>

@@ -40,7 +40,7 @@ const DashboardLayout = () => {
                 <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
                 <div className="flex min-h-full flex-col items-center bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
                     {/* Sidebar content here */}
-                    <ul className="menu w-full grow  mr-3">
+                    <ul className="menu w-full grow pt-14 mr-3">
                         {/* List item */}
                         <li >
                             <NavLink to="/" className={({ isActive }) =>
@@ -70,7 +70,7 @@ const DashboardLayout = () => {
 
                         {/* our dashboard links */}
                         <li >
-                            <NavLink to="/dashboard/my-reports" className={({ isActive }) =>
+                            <NavLink to="/dashboard/my-issues" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
                                 }`} 
