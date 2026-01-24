@@ -66,12 +66,7 @@ const Navbar = () => {
 
         }>About Us</NavLink>
 
-        <NavLink to="/beAStaff" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
-                : "text-gray-800 hover:text-blue-600"
-            }`
-
-        }>Be a Staff</NavLink>
+        
 
 
     </>

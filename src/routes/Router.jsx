@@ -15,7 +15,9 @@ import MyReports from "../Pages/DashboardRelated/MyReports/MyReports";
 import PaymentHistory from "../Pages/DashboardRelated/PaymentHistory/PaymentHistory";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 import UpdateProfile from "../Pages/UpdateProfile/UpdateProfile";
-import BeAStaff from "../Pages/StaffRelated/BeAStaff/BeAStaff";
+
+import AddStaff from "../Pages/DashboardRelated/AdminDashboard/AddStaff";
+import ManageStaffs from "../Pages/DashboardRelated/AdminDashboard/ManageStaffs";
 
 
 export const router = createBrowserRouter([
@@ -56,11 +58,7 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><UpdateProfile></UpdateProfile></PrivateRoute>
             },
 
-            {
-                path: "beAStaff",
-                element: <PrivateRoute><BeAStaff></BeAStaff></PrivateRoute>,
-                loader: () => fetch('/serviceCenter.json').then(res => res.json())
-            }
+            
         ]
     },
 
@@ -103,7 +101,15 @@ export const router = createBrowserRouter([
             {
                 path: "payment-history",
                 Component: PaymentHistory
-            }
+            },
+
+            // admin related route
+            {
+                path: "addStaff",
+                element: <PrivateRoute><AddStaff></AddStaff></PrivateRoute>
+            },
+
+            
         ]
     }
 ])
