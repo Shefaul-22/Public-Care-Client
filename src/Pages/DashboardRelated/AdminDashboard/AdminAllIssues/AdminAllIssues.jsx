@@ -14,7 +14,7 @@ const AdminAllIssues = () => {
 
     const [selectedIssue, setSelectedIssue] = useState(null);
 
-    const { data: issues = [], isLoading ,
+    const { data: issues = [], isLoading,
         // refetch
     } = useQuery({
         queryKey: ["issues"],
@@ -84,14 +84,25 @@ const AdminAllIssues = () => {
                                     </button>
                                 )}
 
-                                {issue.status === "pending" && (
-                                    <button
-                                        className="btn btn-sm btn-error"
-                                        onClick={() => handleReject(issue._id)}
-                                    >
-                                        Reject
-                                    </button>
-                                )}
+                                {
+                                    issue.status === "pending" ? (
+
+                                        <button
+                                            className="btn btn-sm btn-error"
+                                            onClick={() => handleReject(issue._id)}
+                                        >
+                                            Reject
+                                        </button>
+                                    ) : issue.status === "closed" ?
+                                        <span>Issue Resolved & Closed</span>
+
+                                        : issue.status === "rejected" ?
+
+                                            <span>Issue Rejected</span>
+                                            :
+                                            <span>Issue on Progress</span>
+
+                                }
                             </td>
                         </tr>
                     ))}

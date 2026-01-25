@@ -19,7 +19,7 @@ const DashboardLayout = () => {
 
         <div className="drawer lg:drawer-open w-11/12 mx-auto ">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content">
+            <div className="drawer-content w-full">
                 {/* Navbar */}
                 <nav className="navbar w-full bg-base-300">
                     <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
@@ -32,8 +32,8 @@ const DashboardLayout = () => {
                 </nav>
 
                 {/* Page content here */}
-                <Outlet></Outlet>
 
+                <Outlet></Outlet>
             </div>
 
             <div className="drawer-side is-drawer-close:overflow-visible">
