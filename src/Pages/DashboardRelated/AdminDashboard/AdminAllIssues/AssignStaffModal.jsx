@@ -25,7 +25,8 @@ const AssignStaffModal = ({ issue, close }) => {
     await axiosSecure.patch(`/admin/issues/${issue._id}/assign`, {
       staffId: staff._id,
       name: staff.name,
-      email: staff.email
+      email: staff.email,
+      
     });
 
     Swal.fire("Assigned", "Staff assigned successfully", "success");

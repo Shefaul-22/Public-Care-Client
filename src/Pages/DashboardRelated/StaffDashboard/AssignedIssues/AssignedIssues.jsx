@@ -13,7 +13,26 @@ const AssignedIssues = () => {
     console.log(user.email);
     const axiosSecure = useAxiosSecure();
 
-    const statusOptions = ["In-Progress", "Working", "Resolved", "Closed"];
+    // const statusOptions = ["In-Progress", "Working", "Resolved", "Closed"];
+
+    const statusOptions = [
+        { value: "pending", label: "Pending" },
+        { value: "in-progress", label: "In Progress" },
+        { value: "working", label: "Working" },
+        { value: "resolved", label: "Resolved" },
+        { value: "closed", label: "Closed" },
+    ];
+
+    const allowedTransitions = {
+        pending: ["in-progress"],
+        "in-progress": ["working"],
+        working: ["resolved"],
+        resolved: ["closed"],
+    };
+
+
+
+
     const [openRowId, setOpenRowId] = useState(null)
 
     const { data: issues = [], refetch, isLoading } = useQuery({
@@ -26,6 +45,7 @@ const AssignedIssues = () => {
     });
 
     console.log(issues);
+
     const handleStatusChange = async (issue, nextStatus) => {
 
 
@@ -48,7 +68,7 @@ const AssignedIssues = () => {
             }
 
         } catch (err) {
-            Swal.fire("Error", err.response?.data?.message || "Failed", "error");
+            Swal.fire("Error", err.response?.data?.message || "Failed to update status", "error");
         }
     };
 
@@ -86,7 +106,7 @@ const AssignedIssues = () => {
                                 <td className="flex gap-2">
 
                                     {
-                                        issue.status !== "Closed" ? (
+                                        issue.status !== "closed" ? (
 
 
                                             <div className="relative inline-block">
@@ -106,16 +126,28 @@ const AssignedIssues = () => {
                                                         value={issue.status}
                                                         onChange={(e) => {
                                                             handleStatusChange(issue, e.target.value);
-                                                            setOpenRowId(null); 
+                                                            setOpenRowId(null);
                                                         }}
                                                     >
-                                                        {statusOptions.map((status) => (
-                                                            <option key={status} value={status}>
-                                                                {status}
-                                                            </option>
-                                                        ))}
+                                                        {statusOptions.map((status) => {
+                                                            const isCurrent = status.value === issue.status;
+                                                            const isAllowedNext =
+                                                                allowedTransitions[issue.status]?.includes(status.value);
+
+                                                            return (
+                                                                <option
+                                                                    key={status.value}
+                                                                    value={status.value}
+                                                                    disabled={!isCurrent && !isAllowedNext}
+                                                                >
+                                                                    {status.label}
+                                                                </option>
+                                                            );
+                                                        })}
                                                     </select>
+
                                                 )}
+
                                             </div>
 
                                         ) : (
