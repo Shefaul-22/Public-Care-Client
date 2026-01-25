@@ -18,6 +18,7 @@ import UpdateProfile from "../Pages/UpdateProfile/UpdateProfile";
 
 import AddStaff from "../Pages/DashboardRelated/AdminDashboard/AddStaff";
 import ManageStaffs from "../Pages/DashboardRelated/AdminDashboard/ManageStaffs";
+import AdminAllIssues from "../Pages/DashboardRelated/AdminDashboard/AdminAllIssues/AdminAllIssues";
 
 
 export const router = createBrowserRouter([
@@ -108,6 +109,11 @@ export const router = createBrowserRouter([
                 path: "addStaff",
                 element: <PrivateRoute><AddStaff></AddStaff></PrivateRoute>
             },
+
+            {
+                path: "admin-all-issues",
+                element: <PrivateRoute><AdminAllIssues></AdminAllIssues></PrivateRoute>
+            }
 
             
         ]

@@ -84,6 +84,20 @@ const DashboardLayout = () => {
                         </li>
 
                         <li >
+                            <NavLink to="/dashboard/admin-all-issues" className={({ isActive }) =>
+                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
+                                    : ""
+                                }`} 
+                                
+                                onClick={closeDrawer}
+
+                                data-tip="All Issues" end>
+                                <MdReportProblem className='w-8 h-8' />
+                                <span className="is-drawer-close:hidden">All Issues</span>
+                            </NavLink>
+                        </li>
+
+                        <li >
                             <NavLink to="/dashboard/addStaff" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
