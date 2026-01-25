@@ -1,10 +1,13 @@
 // IssueDetails.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import UseAuth from "../hooks/UseAuth";
-import useAxiosSecure from "../hooks/useAxiosSecure";
+
+import UseAuth from "../../hooks/UseAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+
 import Swal from "sweetalert2";
-import IssueTimeline from "./IssueTimeline";
+// import IssueTimeline from "./IssueTimeline";
+import Loading from "../../components/Loading/Loading";
 
 const statusColors = {
   Pending: "bg-yellow-500",
@@ -15,7 +18,7 @@ const statusColors = {
 
 const IssueDetails = () => {
   const { id } = useParams();
-  const { user } = UseAuth();
+  const { user ,loading} = UseAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const [issue, setIssue] = useState(null);
@@ -26,7 +29,7 @@ const IssueDetails = () => {
       .catch(err => console.error(err));
   }, [id]);
 
-  if (!issue) return <p>Loading...</p>;
+  if (!issue || loading) return <Loading></Loading>
 
   const isCreator = user?.email === issue.senderEmail;
   const canEdit = isCreator && issue.status === "Pending";
@@ -98,8 +101,8 @@ const IssueDetails = () => {
         {canBoost && <button onClick={handleBoost} className="btn btn-warning">Boost Priority</button>}
       </div>
 
-      <h3 className="text-xl font-semibold mb-2">Timeline</h3>
-      <IssueTimeline timeline={issue.timeline} />
+      {/* <h3 className="text-xl font-semibold mb-2">Timeline</h3>
+      <IssueTimeline timeline={issue.timeline} /> */}
     </div>
   );
 };

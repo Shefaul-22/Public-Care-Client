@@ -21,6 +21,7 @@ import ManageStaffs from "../Pages/DashboardRelated/AdminDashboard/ManageStaffs"
 import AdminAllIssues from "../Pages/DashboardRelated/AdminDashboard/AdminAllIssues/AdminAllIssues";
 import AssignedIssues from "../Pages/DashboardRelated/StaffDashboard/AssignedIssues/AssignedIssues";
 import MyIssues from "../Pages/DashboardRelated/CitizenDashboard/MyIssues/MyIssues";
+import IssueDetails from "../Pages/IssueDetails/IssueDetails";
 
 
 export const router = createBrowserRouter([
@@ -60,6 +61,11 @@ export const router = createBrowserRouter([
                 path: "updateProfile",
                 element: <PrivateRoute><UpdateProfile></UpdateProfile></PrivateRoute>
             },
+
+            {
+                path: "issues/:id",
+                element: <IssueDetails></IssueDetails>
+            }
 
             
         ]
