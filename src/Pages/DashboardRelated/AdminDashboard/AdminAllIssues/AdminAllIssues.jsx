@@ -64,18 +64,18 @@ const AdminAllIssues = () => {
                             <td>{issue.title}</td>
                             <td>{issue.category}</td>
                             <td>{issue.status}</td>
-                            <td>
-                                {issue.priority === "high"
+                            <td> {issue.priority}
+                                {/* {issue.priority === "high"
                                     ? <span className="badge badge-error">High</span>
-                                    : "Normal"}
+                                    : "Normal"} */}
                             </td>
                             <td>
-                                {issue.assignedStaff
-                                    ? issue.assignedStaff.name
+                                {issue.staffEmail
+                                    ? issue.staffName
                                     : "Not Assigned"}
                             </td>
                             <td className="space-x-2">
-                                {!issue.assignedStaff && (
+                                {!issue.staffEmail && (
                                     <button
                                         className="btn btn-sm btn-primary"
                                         onClick={() => setSelectedIssue(issue)}

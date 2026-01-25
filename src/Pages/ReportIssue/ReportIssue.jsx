@@ -122,7 +122,7 @@ const ReportIssue = () => {
 
 
             const issueInfo = {
-                issueName: data.issueName,
+                title: data.issueName,
                 category: data.category,
                 issueDescription: data.issueDescription,
                 photoURL,
