@@ -11,7 +11,7 @@ import PrivateRoute from "./PrivateRoute";
 import ReportIssue from "../Pages/ReportIssue/ReportIssue";
 import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../Pages/DashboardRelated/DashboardHome/DashboardHome";
-import MyReports from "../Pages/DashboardRelated/MyReports/MyReports";
+
 import PaymentHistory from "../Pages/DashboardRelated/PaymentHistory/PaymentHistory";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 import UpdateProfile from "../Pages/UpdateProfile/UpdateProfile";
@@ -20,6 +20,7 @@ import AddStaff from "../Pages/DashboardRelated/AdminDashboard/AddStaff";
 import ManageStaffs from "../Pages/DashboardRelated/AdminDashboard/ManageStaffs";
 import AdminAllIssues from "../Pages/DashboardRelated/AdminDashboard/AdminAllIssues/AdminAllIssues";
 import AssignedIssues from "../Pages/DashboardRelated/StaffDashboard/AssignedIssues/AssignedIssues";
+import MyIssues from "../Pages/DashboardRelated/CitizenDashboard/MyIssues/MyIssues";
 
 
 export const router = createBrowserRouter([
@@ -97,7 +98,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "my-issues",
-                Component: MyReports
+                element: <PrivateRoute><MyIssues></MyIssues></PrivateRoute>
             },
 
             {
