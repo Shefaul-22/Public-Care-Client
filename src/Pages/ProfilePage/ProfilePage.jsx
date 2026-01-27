@@ -1,16 +1,78 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import UseAuth from '../../hooks/UseAuth';
 import { useNavigate } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Loading from '../../components/Loading/Loading';
+import Swal from 'sweetalert2';
 
 const ProfilePage = () => {
 
-    const {user} = UseAuth();
+    const { user } = UseAuth();
 
     const navigate = useNavigate();
+    const axiosSecure = useAxiosSecure();
+
+    const { data: userData = [], isLoading,
+        refetch
+
+    } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/users?email=${user.email}`);
+            return res.data;
+        }
+    })
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+
+        const sessionId = params.get('session_id');
+
+        if (sessionId) {
+            axiosSecure.patch(`/premium-payment-success?session_id=${sessionId}`)
+                .then(res => {
+
+                    if (res.data.success) {
+                        Swal.fire(
+                            'Premium Activated',
+                            'You are now a premium user!',
+                            'success'
+                        );
+                        refetch();
+                    }
+                });
+        }
+
+        if (params.get('payment') === 'cancelled') {
+            Swal.fire('Cancelled', 'Payment was cancelled', 'info');
+        }
+    }, [user?.email, axiosSecure, refetch]);
+
 
     const handleUpdateProfile = () => {
         navigate('/updateProfile')
     }
+
+
+    const handlePurchasePremium = async () => {
+
+        // console.log('data after click', userData);
+        try {
+            const res = await axiosSecure.post('/create-premium-checkout-session', {
+                email: user.email,
+                name: user.displayName
+            });
+
+            window.location.href = res.data.url;
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+
+    if (isLoading) return <Loading></Loading>
+
     return (
         <div className='bg-[#bdd7e7] py-6'>
             <div className="max-w-4xl mx-auto bg-gray-300 shadow-lg rounded-2xl  p-12">
@@ -26,7 +88,13 @@ const ProfilePage = () => {
 
                         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                             {user.displayName || "No Name"}
+                            {userData?.role === 'premiumUser' && (
+                                <span className="ml-2 px-2 py-2 text-xs bg-yellow-400 rounded">
+                                    ⭐ Premium
+                                </span>
+                            )}
                         </h2>
+
 
                         <p className="text-gray-700">{user.email}</p>
                         <p className="text-sm text-gray-600 mt-1">
@@ -36,8 +104,14 @@ const ProfilePage = () => {
                         {/* Update Button */}
                         <button
                             onClick={handleUpdateProfile}
-                            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition cursor-pointer"
+                            className="mt-4 bg-blue-500 text-white px-4 py-2 mr-4 rounded hover:bg-blue-600 transition cursor-pointer"
                         >Update Profile
+                        </button>
+
+                        <button
+                            onClick={handlePurchasePremium}
+                            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition cursor-pointer"
+                        >Purchase Premium
                         </button>
                     </div>
                 </div>

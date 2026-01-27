@@ -117,6 +117,7 @@ const IssueDetails = () => {
       window.location.href = res.data.url;
 
     } catch (err) {
+      
       console.error("Boost payment error:", err);
       Swal.fire("Error", "Failed to initiate payment.", "error");
     }
