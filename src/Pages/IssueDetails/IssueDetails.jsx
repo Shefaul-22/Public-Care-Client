@@ -25,11 +25,46 @@ const IssueDetails = () => {
   const [issue, setIssue] = useState(null);
   const [editIssue, setEditIssue] = useState(null);
 
+
+
   useEffect(() => {
     axiosSecure.get(`/issues/${id}`)
       .then(res => setIssue(res.data))
       .catch(err => console.error(err));
   }, [id]);
+
+  // useEffect(() => {
+  //   const params = new URLSearchParams(window.location.search);
+  //   if (params.get('payment') === 'cancelled') {
+  //     Swal.fire('Payment Cancelled', 'You did not complete the payment.', 'info');
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session_id');
+
+    if (sessionId) {
+      axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
+        .then(res => {
+          if (res.data.success) {
+            axiosSecure.get(`/issues/${id}`).then(r => setIssue(r.data));
+            Swal.fire('Success', 'Issue priority updated!', 'success');
+          }
+        })
+        .catch(err => console.error(err));
+    } else if (params.get('payment') === 'cancelled') {
+      Swal.fire('Payment Cancelled', 'You did not complete the payment.', 'info');
+    }
+  }, [id]);
+
+
+
+
+
+  console.log('Boosting issue:', issue);
+
+
 
   if (!issue || loading) return <Loading></Loading>
   console.log(issue);
@@ -40,13 +75,16 @@ const IssueDetails = () => {
   const canBoost = issue.priority !== "high";
 
   const handleDelete = async () => {
-    const confirm = await Swal.fire({
+    const confirm = await 
+    
+    Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!"
     });
+
     if (confirm.isConfirmed) {
       await axiosSecure.delete(`/issues/${id}`);
       Swal.fire("Deleted!", "Issue has been deleted.", "success");
@@ -54,8 +92,8 @@ const IssueDetails = () => {
     }
   };
 
-  const handleBoost = async () => {
-    // simulate payment here
+  const handleBoost = async (issue) => {
+
     const confirm = await Swal.fire({
       title: "Boost Issue",
       text: "Pay 100 TK to boost priority",
@@ -64,17 +102,25 @@ const IssueDetails = () => {
       confirmButtonText: "Pay & Boost"
     });
 
-    if (confirm.isConfirmed) {
+    if (!confirm.isConfirmed) return;
 
-      await axiosSecure.post(`/issues/${id}/boost`, { boostedBy: user.displayName });
-      Swal.fire("Success", "Issue has been boosted", "success");
-      // reload issue
-      const res = await axiosSecure.get(`/issues/${id}`);
-      setIssue(res.data);
-      
+    try {
+      const paymentInfo = {
+        issueId: issue._id,
+        boostedBy: user.email, // stripe needs email
+        issueName: issue.title
+      };
+
+      const res = await axiosSecure.post(`/create-checkout-session`, paymentInfo);
+
+      // redirect user to Stripe checkout
+      window.location.href = res.data.url;
+
+    } catch (err) {
+      console.error("Boost payment error:", err);
+      Swal.fire("Error", "Failed to initiate payment.", "error");
     }
   };
-
 
   return (
     <div className="p-4 max-w-4xl mx-auto">
@@ -115,7 +161,7 @@ const IssueDetails = () => {
 
         {
           (issue.status !== "resolved" && issue.status !== "closed") &&
-          (canBoost && <button onClick={handleBoost} className="btn btn-warning">Boost Priority</button>)
+          (canBoost && <button onClick={() => handleBoost(issue)} className="btn btn-warning">Boost Priority</button>)
         }
 
       </div>
