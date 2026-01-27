@@ -8,6 +8,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 // import IssueTimeline from "./IssueTimeline";
 import Loading from "../../components/Loading/Loading";
+import EditIssueModal from "../DashboardRelated/CitizenDashboard/MyIssues/EditIssueModal";
 
 const statusColors = {
   Pending: "bg-yellow-500",
@@ -18,10 +19,11 @@ const statusColors = {
 
 const IssueDetails = () => {
   const { id } = useParams();
-  const { user ,loading} = UseAuth();
+  const { user, loading } = UseAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const [issue, setIssue] = useState(null);
+  const [editIssue, setEditIssue] = useState(null);
 
   useEffect(() => {
     axiosSecure.get(`/issues/${id}`)
@@ -30,9 +32,10 @@ const IssueDetails = () => {
   }, [id]);
 
   if (!issue || loading) return <Loading></Loading>
-
+  console.log(issue);
+  // console.log(user?.email, issue);
   const isCreator = user?.email === issue.senderEmail;
-  const canEdit = isCreator && issue.status === "Pending";
+  const canEdit = isCreator && issue.status === "pending";
   const canDelete = isCreator;
   const canBoost = issue.priority !== "high";
 
@@ -62,13 +65,16 @@ const IssueDetails = () => {
     });
 
     if (confirm.isConfirmed) {
+
       await axiosSecure.post(`/issues/${id}/boost`, { boostedBy: user.displayName });
       Swal.fire("Success", "Issue has been boosted", "success");
       // reload issue
       const res = await axiosSecure.get(`/issues/${id}`);
       setIssue(res.data);
+      
     }
   };
+
 
   return (
     <div className="p-4 max-w-4xl mx-auto">
@@ -81,10 +87,12 @@ const IssueDetails = () => {
         <span className={`px-2 py-1 text-white text-xs rounded ${issue.priority === "high" ? "bg-red-500" : "bg-gray-500"}`}>
           {issue.priority === "high" ? "Boosted" : "Normal"}
         </span>
-        
+
       </div>
+
       <p className="mb-2"><strong>Category:</strong> {issue.category}</p>
       <p className="mb-2"><strong>Description:</strong> {issue.issueDescription}</p>
+
       <img src={issue.photoURL} alt={issue.issueName} className="w-64 h-64 object-cover my-4 rounded" />
 
       {issue.staffAssigned && (
@@ -96,10 +104,41 @@ const IssueDetails = () => {
       )}
 
       <div className="flex gap-3 mb-6">
-        {canEdit && <button onClick={() => navigate(`/issues/${id}/edit`)} className="btn btn-primary">Edit</button>}
-        {canDelete && <button onClick={handleDelete} className="btn btn-error">Delete</button>}
-        {canBoost && <button onClick={handleBoost} className="btn btn-warning">Boost Priority</button>}
+
+        {
+          canEdit && <button onClick={() => setEditIssue(issue)} className="btn btn-primary">Edit</button>
+        }
+
+        {
+          canDelete && <button onClick={handleDelete} className="btn btn-error">Delete</button>
+        }
+
+        {
+          (issue.status !== "resolved" && issue.status !== "closed") &&
+          (canBoost && <button onClick={handleBoost} className="btn btn-warning">Boost Priority</button>)
+        }
+
       </div>
+
+      {
+        editIssue && (
+          <EditIssueModal
+
+            issue={editIssue}
+            onClose={() => setEditIssue(null)}
+            onUpdated={async () => {
+              setEditIssue(null);
+              // setIssue(issue)
+
+              const res = await axiosSecure.get(`/issues/${id}`);
+              setIssue(res.data);
+
+            }}
+
+
+          ></EditIssueModal>
+        )
+      }
 
       {/* <h3 className="text-xl font-semibold mb-2">Timeline</h3>
       <IssueTimeline timeline={issue.timeline} /> */}
