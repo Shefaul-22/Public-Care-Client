@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import { handleBlockedError } from "../../../../utils/handleBlockedError";
 
 
 const EditIssueModal = ({ issue, onClose, onUpdated }) => {
@@ -63,16 +64,25 @@ const EditIssueModal = ({ issue, onClose, onUpdated }) => {
             if (res.data.modifiedCount) {
 
                 Swal.fire(
-                    "Updated", 
-                    "Issue updated successfully", 
+                    "Updated",
+                    "Issue updated successfully",
                     "success"
                 );
                 onUpdated();
             }
         } catch (error) {
             console.error(error);
-            
-            Swal.fire("Error", "Failed to update issue", "error");
+
+            // Swal.fire("Error", "Failed to update issue", "error");
+
+            if (!handleBlockedError(error)) {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: error.response?.data?.message || "Something went wrong",
+                });
+            }
         }
     };
 

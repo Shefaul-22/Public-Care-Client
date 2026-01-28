@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import Loading from "../../components/Loading/Loading";
 import EditIssueModal from "../DashboardRelated/CitizenDashboard/MyIssues/EditIssueModal";
 import Timeline from "./Timeline";
+import { handleBlockedError } from "../../utils/handleBlockedError";
 
 const statusColors = {
   Pending: "bg-yellow-500",
@@ -76,24 +77,46 @@ const IssueDetails = () => {
   const canBoost = issue.priority !== "high";
 
   const handleDelete = async () => {
-    const confirm = await
 
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!"
-      });
+    try {
 
-    if (confirm.isConfirmed) {
-      await axiosSecure.delete(`/issues/${id}`);
-      Swal.fire("Deleted!", "Issue has been deleted.", "success");
-      navigate("/dashboard/my-issues");
+      const confirm = await
+
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!"
+        });
+
+      if (confirm.isConfirmed) {
+        await axiosSecure.delete(`/issues/${id}`);
+        Swal.fire("Deleted!", "Issue has been deleted.", "success");
+        navigate("/dashboard/my-issues");
+      }
     }
+    catch (error) {
+
+      if (!handleBlockedError(error)) {
+
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.response?.data?.message || "Something went wrong",
+        });
+      }
+
+    }
+
+
   };
 
+
+
+
   const handleBoost = async (issue) => {
+
 
     const confirm = await Swal.fire({
       title: "Boost Issue",
@@ -117,10 +140,20 @@ const IssueDetails = () => {
       // redirect user to Stripe checkout
       window.location.href = res.data.url;
 
-    } catch (err) {
+    } catch (error) {
 
-      console.error("Boost payment error:", err);
-      Swal.fire("Error", "Failed to initiate payment.", "error");
+      console.error("Boost payment error:", error);
+
+      // Swal.fire("Error", "Failed to initiate payment.", "error");
+      if (!handleBlockedError(error)) {
+
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.response?.data?.message || "Something went wrong",
+        });
+      }
+
     }
   };
 
@@ -190,7 +223,7 @@ const IssueDetails = () => {
 
       <h2 className="text-xl font-semibold mb-2">Issue Timeline</h2>
 
-      <Timeline timeline = {issue.timeline}>
+      <Timeline timeline={issue.timeline}>
 
       </Timeline>
 

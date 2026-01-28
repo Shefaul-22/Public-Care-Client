@@ -7,6 +7,7 @@ import { useLoaderData, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { handleBlockedError } from '../../utils/handleBlockedError';
 
 
 const ReportIssue = () => {
@@ -150,7 +151,14 @@ const ReportIssue = () => {
         } catch (error) {
             console.error(error);
 
-            Swal.fire("Error", "Something went wrong! Try Again.", "error");
+            if (!handleBlockedError(error)) {
+                
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: error.response?.data?.message || "Something went wrong",
+                });
+            }
 
         }
     };
@@ -194,7 +202,7 @@ const ReportIssue = () => {
 
 
                         </fieldset>
-                        
+
                         {/* Issue description */}
                         <fieldset className='fieldset'>
                             <legend className="label">Issue Details</legend>
@@ -291,17 +299,17 @@ const ReportIssue = () => {
                         type="submit"
                         className='btn btn-primary mt-8 text-white disabled:cursor-not-allowed'
                         value="Send Issue"
-                        disabled={role !== 'premium' && issueCount >= 3}
+                        disabled={role !== 'premiumUser' && issueCount >= 3}
                     />
 
-                    {role !== 'premium' && issueCount >= 3 && (
+                    {role !== 'premiumUser' && issueCount >= 3 && (
                         <span className="absolute left-54 -translate-x-1/2 -top-1 w-max bg-gray-800 text-white  px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-md">
                             Free users can submit up to 3 issues. Upgrade to Premium.
                         </span>
                     )}
                 </div>
 
-                {role !== 'premium' && issueCount >= 3 && (
+                {role !== 'premiumUser' && issueCount >= 3 && (
                     <button
                         type="button"
                         className="btn btn-warning ml-5 mt-8"
