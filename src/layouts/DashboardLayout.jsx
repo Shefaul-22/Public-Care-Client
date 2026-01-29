@@ -147,7 +147,7 @@ const DashboardLayout = () => {
 
                         <li>
 
-                            <NavLink to="/dashboard/payment-history" className={({ isActive }) =>
+                            <NavLink to="/dashboard/allPayments-history" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
                                 }`} 

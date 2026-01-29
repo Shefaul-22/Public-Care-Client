@@ -23,6 +23,7 @@ import AssignedIssues from "../Pages/DashboardRelated/StaffDashboard/AssignedIss
 import MyIssues from "../Pages/DashboardRelated/CitizenDashboard/MyIssues/MyIssues";
 import IssueDetails from "../Pages/IssueDetails/IssueDetails";
 import ManageUsers from "../Pages/DashboardRelated/AdminDashboard/ManageUsers";
+import AllPaymentsHistory from "../Pages/DashboardRelated/AdminDashboard/AllPaymentsHistory";
 
 
 export const router = createBrowserRouter([
@@ -108,10 +109,10 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><MyIssues></MyIssues></PrivateRoute>
             },
 
-            {
-                path: "payment-history",
-                Component: PaymentHistory
-            },
+            // {
+            //     path: "payment-history",
+            //     Component: PaymentHistory
+            // },
 
             // admin related route
             {
@@ -129,12 +130,19 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><ManageUsers></ManageUsers></PrivateRoute>
             },
 
+            {
+                path: "allPayments-history",
+                element: <PrivateRoute><AllPaymentsHistory></AllPaymentsHistory></PrivateRoute>
+            },
+
             // Staff related routes
 
             {
                 path: "staff-assigned-issues",
                 element: <PrivateRoute><AssignedIssues></AssignedIssues></PrivateRoute>
             },
+
+
 
             
 

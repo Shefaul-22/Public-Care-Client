@@ -117,6 +117,8 @@ const IssueDetails = () => {
 
   const handleBoost = async (issue) => {
 
+    console.log(issue);
+
 
     const confirm = await Swal.fire({
       title: "Boost Issue",
@@ -132,7 +134,7 @@ const IssueDetails = () => {
       const paymentInfo = {
         issueId: issue._id,
         boostedBy: user.email, // stripe needs email
-        issueName: issue.title
+        title: issue.title
       };
 
       const res = await axiosSecure.post(`/create-checkout-session`, paymentInfo);
@@ -159,7 +161,7 @@ const IssueDetails = () => {
 
   return (
     <div className="p-4 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold mb-2">{issue.issueName}</h2>
+      <h2 className="text-3xl font-bold mb-2">{issue.title}</h2>
       <div className="flex items-center gap-4 mb-4">
         <span className={`px-2 py-1 text-white text-xs rounded ${statusColors[issue.status]}`}>
           {issue.status}
@@ -176,11 +178,11 @@ const IssueDetails = () => {
 
       <img src={issue.photoURL} alt={issue.issueName} className="w-64 h-64 object-cover my-4 rounded" />
 
-      {issue.staffAssigned && (
+      {issue.staffId && (
         <div className="mb-4 p-4 border rounded">
           <h3 className="font-semibold">Assigned Staff</h3>
-          <p>Name: {issue.staffAssigned.name}</p>
-          <p>Email: {issue.staffAssigned.email}</p>
+          <p>Name: {issue.staffName}</p>
+          <p> {issue.statusMessage}</p>
         </div>
       )}
 
