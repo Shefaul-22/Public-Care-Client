@@ -5,6 +5,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router';
 import Logo from '../../components/Shared/Logo';
 import UseAuth from '../../hooks/UseAuth';
+import Swal from 'sweetalert2';
 
 const Login = () => {
 
@@ -19,7 +20,7 @@ const Login = () => {
     const location = useLocation();
     console.log('in the login', location)
 
-   
+
 
     const handleLogin = (data) => {
         // console.log("data after login ", data);
@@ -27,10 +28,27 @@ const Login = () => {
         signInUser(data.email, data.password)
             .then(result => {
                 console.log(result.user);
+                Swal.fire({
+                    title: "Success",
+                    text: "Login Successful!",
+                    icon: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
                 navigate(location?.state || '/');
             })
             .catch(error => {
+
                 console.log(error);
+
+                Swal.fire({
+                    title: "Error",
+                    text: "Login Failed! Try again",
+                    icon: "error",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
             })
 
     }

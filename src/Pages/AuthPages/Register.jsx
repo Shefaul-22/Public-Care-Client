@@ -7,6 +7,7 @@ import Logo from '../../components/Shared/Logo';
 import UseAuth from '../../hooks/UseAuth';
 import axios from 'axios';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
 
 const Register = () => {
@@ -67,13 +68,36 @@ const Register = () => {
 
                         UpdateUserProfile(userProfile)
                             .then(() => {
-                                console.log('userProfile updated done');
+                                // console.log('userProfile updated done');
+
+                                // Swal.fire(
+                                //     "Success",
+                                //     "Registration Successfull",
+                                //     "success"
+                                // )
+
+                                Swal.fire({
+                                    title: "Success",
+                                    text: "Registration Successful!",
+                                    icon: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+
                                 navigate("/login", {
                                     state: location.state
                                 });
                             })
                             .catch(error => {
                                 console.log(error)
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "Registration Failed! Try again",
+                                    icon: "error",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+
                             })
                     })
 
