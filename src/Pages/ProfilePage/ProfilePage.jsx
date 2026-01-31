@@ -1,17 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import UseAuth from '../../hooks/UseAuth';
-import { useNavigate } from 'react-router';
+
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Loading from '../../components/Loading/Loading';
 import Swal from 'sweetalert2';
+import { FaExclamationTriangle } from 'react-icons/fa';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 const ProfilePage = () => {
 
     const { user } = UseAuth();
 
-    const navigate = useNavigate();
+
     const axiosSecure = useAxiosSecure();
+
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const { register, handleSubmit,
+        reset,
+        formState: { errors }
+    } = useForm();
+
 
     const { data: userData = [], isLoading,
         refetch
@@ -50,9 +62,49 @@ const ProfilePage = () => {
     }, [user?.email, axiosSecure, refetch]);
 
 
-    const handleUpdateProfile = () => {
-        navigate('/updateProfile')
-    }
+
+    // profile update
+
+    const handleUpdateProfileModal = () => {
+        setIsOpen(true);
+    };
+
+    const handleProfileUpdate = async (data) => {
+        try {
+            let photoURL = user.photoURL;
+
+            // image selected হলে upload
+            if (data.photo?.length > 0) {
+                const imageFile = data.photo[0];
+                const formData = new FormData();
+                formData.append("image", imageFile);
+
+                const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`;
+                const imgRes = await axios.post(image_API_URL, formData);
+
+                photoURL = imgRes.data.data.url;
+            }
+
+            const updateInfo = {
+                email: user.email,
+                displayName: data.name,
+                phone: data.phone,
+                photoURL
+            };
+
+            const res = await axiosSecure.patch("/users/profile", updateInfo);
+
+            if (res.data.modifiedCount > 0) {
+                Swal.fire("Updated!", "Profile updated successfully", "success");
+                refetch();
+                reset();
+                setIsOpen(false);
+            }
+        } catch (err) {
+            Swal.fire("Error", err.message, "error");
+        }
+    };
+
 
 
     const handlePurchasePremium = async () => {
@@ -93,26 +145,65 @@ const ProfilePage = () => {
                                     ⭐ Premium user
                                 </span>
                             )}
+
+                            {userData?.role === 'admin' && (
+                                <span className="ml-2 px-2 py-2 text-xs bg-amber-100 rounded">
+                                    Admin
+                                </span>
+                            )}
+
+                            {userData?.role === 'staff' && (
+                                <span className="ml-2 px-2 py-2 text-xs bg-amber-100 rounded">
+                                    Staff
+                                </span>
+                            )}
+
+                            {userData?.userStatus === "blocked" && (
+                                <span className="relative group">
+                                    <FaExclamationTriangle size={24} className="text-red-500 text-lg cursor-pointer ml-3" />
+
+                                    {/* Tooltip */}
+                                    <span className="absolute left-1/2 -translate-x-1/2 bottom-8
+        w-64 bg-gray-900 text-white text-xs rounded-md px-3 py-2
+        opacity-0 group-hover:opacity-100 transition
+        pointer-events-none text-center shadow-lg">
+                                        Your account has been blocked by the admin.
+                                        Please contact the authorities.
+                                    </span>
+                                </span>
+                            )}
+
+
+
                         </h2>
 
 
+
+
+
+
                         <p className="text-gray-700">{user.email}</p>
+
                         <p className="text-sm text-gray-600 mt-1">
                             {user.emailVerified ? "Email Verified" : "Email Not Verified"}
                         </p>
 
                         {/* Update Button */}
                         <button
-                            onClick={handleUpdateProfile}
+                            onClick={handleUpdateProfileModal}
                             className="mt-4 bg-blue-500 text-white px-4 py-2 mr-4 rounded hover:bg-blue-600 transition cursor-pointer"
                         >Update Profile
                         </button>
 
-                        <button
-                            onClick={handlePurchasePremium}
-                            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition cursor-pointer"
-                        >Purchase Premium
-                        </button>
+                        {
+                            userData?.role === "user" &&
+
+                            <button
+                                onClick={handlePurchasePremium}
+                                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition cursor-pointer"
+                            >Purchase Premium
+                            </button>
+                        }
                     </div>
                 </div>
 
@@ -126,11 +217,11 @@ const ProfilePage = () => {
 
                     <div className="p-4 bg-gray-50 rounded-xl">
                         <h3 className="text-sm font-semibold text-gray-500">Phone</h3>
-                        <p className="mt-1 text-gray-900 text-sm">{user.phoneNumber || "N/A"}</p>
+                        <p className="mt-1 text-gray-900 text-sm">{userData.phone || "N/A"}</p>
                     </div>
 
                     <div className="p-4 bg-gray-50 rounded-xl">
-                        <h3 className="text-sm font-semibold text-gray-500">Provider</h3>
+                        <h3 className="text-sm font-semibold text-gray-500">UID Provider</h3>
                         <p className="mt-1 text-gray-900 text-sm">{user.providerId}</p>
                     </div>
 
@@ -144,8 +235,71 @@ const ProfilePage = () => {
                         <p className="mt-1 text-gray-900 text-sm">{user.metadata?.creationTime}</p>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+
+            {isOpen && (
+                <dialog open className="modal">
+                    <div className="modal-box">
+                        <h3 className="font-bold text-lg mb-4">Update Profile</h3>
+
+                        <form
+                            onSubmit={handleSubmit(handleProfileUpdate)}
+                            className="space-y-3"
+                        >
+                            {/* Name */}
+                            <label className="font-semibold">Name</label>
+                            <input
+                                defaultValue={user.displayName}
+                                {...register("name", { required: "Name is required" })}
+                                placeholder="Full Name"
+                                className="input input-bordered w-full"
+                            />
+                            {errors.name && (
+                                <p className="text-red-500 text-sm">{errors.name.message}</p>
+                            )}
+
+                            {/* Phone */}
+
+                            <label className="font-semibold">Phone</label>
+                            <input
+                                defaultValue={userData?.phone}
+                                {...register("phone")}
+                                placeholder="Phone Number"
+                                className="input input-bordered w-full"
+                            />
+
+                            {/* Photo */}
+                            <label className="font-semibold">Photo</label>
+                            <input
+                                {...register("photo")}
+                                type="file"
+                                accept="image/*"
+                                className="file-input file-input-bordered w-full"
+                            />
+
+                            {/* Actions */}
+                            <div className="modal-action">
+                                <button type="submit" className="btn btn-primary">
+                                    Update
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className="btn"
+                                    onClick={() => {
+                                        reset();
+                                        setIsOpen(false);
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </dialog>
+            )}
+
+        </div >
     );
 };
 

@@ -137,6 +137,7 @@ const Navbar = () => {
                             >
 
                                 <li className="flex flex-col items-start pb-3 border-b mb-3">
+
                                     <span className="text-lg font-semibold flex items-center">
                                         {user.displayName || "User"}
                                         {userData.role === "premiumUser" && (
@@ -149,9 +150,9 @@ const Navbar = () => {
                                     </span>
                                 </li>
 
-                                <Link to="/profile" className="btn btn-error btn-sm w-full text-white mb-3">
+                                {/* <Link to="/profile" className="btn btn-error btn-sm w-full text-white mb-3">
                                     Profile
-                                </Link>
+                                </Link> */}
 
                                 <Link to="/dashboard" className="btn btn-error btn-sm w-full text-white mb-3">
                                     Dashboard

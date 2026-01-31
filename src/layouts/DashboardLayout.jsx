@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FaRegCreditCard } from 'react-icons/fa';
+import { FaRegCreditCard, FaUser } from 'react-icons/fa';
 import { MdReportProblem } from 'react-icons/md';
 import { NavLink, Outlet } from 'react-router';
 
@@ -48,8 +48,8 @@ const DashboardLayout = () => {
                             <NavLink to="/" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
-                                }`} 
-                                
+                                }`}
+
                                 onClick={closeDrawer}
 
                                 data-tip="CivicCare Home" end><img src="https://i.ibb.co.com/7d0qMChV/image.png" className='w-12 h-10 md:h-8 ' alt="CivicCare Home" /><span className='inline md:hidden'>CivicCare Home</span></NavLink>
@@ -59,8 +59,8 @@ const DashboardLayout = () => {
                             <NavLink to="/dashboard" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
-                                }`} 
-                                
+                                }`}
+
                                 onClick={closeDrawer}
 
                                 data-tip="Dashboard Home" end>
@@ -75,8 +75,8 @@ const DashboardLayout = () => {
                             <NavLink to="/dashboard/my-issues" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
-                                }`} 
-                                
+                                }`}
+
                                 onClick={closeDrawer}
 
                                 data-tip="My Issues" end>
@@ -89,8 +89,8 @@ const DashboardLayout = () => {
                             <NavLink to="/dashboard/staff-assigned-issues" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
-                                }`} 
-                                
+                                }`}
+
                                 onClick={closeDrawer}
 
                                 data-tip="Assigned Issues" end>
@@ -103,8 +103,8 @@ const DashboardLayout = () => {
                             <NavLink to="/dashboard/admin-all-issues" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
-                                }`} 
-                                
+                                }`}
+
                                 onClick={closeDrawer}
 
                                 data-tip="All Issues" end>
@@ -117,8 +117,8 @@ const DashboardLayout = () => {
                             <NavLink to="/dashboard/addStaff" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
-                                }`} 
-                                
+                                }`}
+
                                 onClick={closeDrawer}
 
                                 data-tip="Add & Manage Staff" end>
@@ -132,8 +132,8 @@ const DashboardLayout = () => {
                             <NavLink to="/dashboard/manage-users" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
-                                }`} 
-                                
+                                }`}
+
                                 onClick={closeDrawer}
 
                                 data-tip="Manage users" end>
@@ -143,20 +143,36 @@ const DashboardLayout = () => {
                             </NavLink>
                         </li>
 
-                        
+
 
                         <li>
 
                             <NavLink to="/dashboard/allPayments-history" className={({ isActive }) =>
                                 ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
                                     : ""
-                                }`} 
-                                
+                                }`}
+
                                 onClick={closeDrawer}
-                                
+
                                 data-tip="Payment History" end>
                                 <FaRegCreditCard className='w-8 h-8' />
                                 <span className="is-drawer-close:hidden">Payment History</span>
+                            </NavLink>
+                        </li>
+
+
+                        <li>
+
+                            <NavLink to="/dashboard/profile" className={({ isActive }) =>
+                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
+                                    : ""
+                                }`}
+
+                                onClick={closeDrawer}
+
+                                data-tip="Your profile" end>
+                                <FaUser className='w-8 h-8' />
+                                <span className="is-drawer-close:hidden">Profile</span>
                             </NavLink>
 
                         </li>

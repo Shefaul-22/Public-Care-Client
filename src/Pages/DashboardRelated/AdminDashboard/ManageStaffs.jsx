@@ -86,15 +86,19 @@ const ManageStaffs = () => {
                         <th>Actions</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     {staffs.map((staff) => (
+
                         <tr key={staff._id}>
                             <td>
-                                <img src={staff.photo} alt={staff.name} className="w-12 h-12 rounded-full" />
+                                <img src={staff.photoURL} alt={staff.name} className="w-12 h-12 rounded-full" />
                             </td>
-                            <td>{staff.name}</td>
+
+                            <td>{staff.displayName}</td>
                             <td>{staff.email}</td>
                             <td>{staff.phone || "-"}</td>
+
                             <td>
                                 <button onClick={() => handleUpdate(staff)} className="btn btn-sm btn-info mr-2">
                                     Update
@@ -114,17 +118,23 @@ const ManageStaffs = () => {
                     <div className="modal-box">
                         <h3 className="font-bold text-lg mb-4">Update Staff</h3>
                         <form onSubmit={handleUpdateSubmit} className="space-y-3">
+
+                            <label className="font-semibold">Name</label>
                             <input
                                 defaultValue={editStaff.name}
                                 name="name"
                                 className="input input-bordered w-full"
                                 required
                             />
-                            <input
+
+                            <label className="font-semibold">Phone</label>
+                            
+                            <input type="number"
                                 defaultValue={editStaff.phone || ""}
                                 name="phone"
                                 className="input input-bordered w-full"
                             />
+
                             <div className="modal-action">
                                 <button type="submit" className="btn btn-primary">Save</button>
                                 <button

@@ -28,6 +28,7 @@ const AddStaff = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const handleAddStaff = async (data) => {
+
         try {
             const profileImg = data.photo[0];
 
@@ -40,11 +41,11 @@ const AddStaff = () => {
             const photoURL = imgRes.data.data.url;
 
             const staffInfo = {
-                name: data.name,
+                displayName: data.name,
                 email: data.email,
                 password: data.password,
                 phone: data.phone,
-                photo: photoURL,
+                photoURL,
             };
 
             // Send data to db
@@ -53,8 +54,8 @@ const AddStaff = () => {
             if (res.data.success) {
 
                 Swal.fire(
-                    "Success", 
-                    "Staff added successfully", 
+                    "Success",
+                    "Staff added successfully",
                     "success");
                 reset();
                 setIsOpen(false);
@@ -66,6 +67,7 @@ const AddStaff = () => {
             }
 
         } catch (error) {
+
             Swal.fire("Error", error.message, "error");
         }
     };
@@ -89,37 +91,61 @@ const AddStaff = () => {
                     <div className="modal-box">
                         <h3 className="font-bold text-lg mb-4">Add New Staff</h3>
                         <form onSubmit={handleSubmit(handleAddStaff)} className="space-y-3">
+
+                            <label className="font-semibold">Name</label>
                             <input
                                 {...register("name", { required: "Name is required" })}
                                 placeholder="Name"
                                 className="input input-bordered w-full"
                             />
-                            {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+                            {
+                                errors.name &&
+                                <p className="text-red-500">{errors.name.message}</p>
+                            }
+
+                            <label className="font-semibold">Email</label>
 
                             <input
                                 {...register("email", { required: "Email is required" })}
                                 type="email"
                                 placeholder="Email"
+                                defaultValue=""
+                                
                                 className="input input-bordered w-full"
                             />
-                            {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+
+                            {
+                                errors.email &&
+                                <p className="text-red-500">{errors.email.message}</p>
+                            }
+
+                            <label className="font-semibold">Password</label>
 
                             <input
                                 {...register("password", {
                                     required: "Password is required",
                                     minLength: { value: 6, message: "Min 6 characters" }
                                 })}
+
+                                defaultValue=""
                                 type="password"
                                 placeholder="Password"
                                 className="input input-bordered w-full"
                             />
-                            {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+                            {
+                                errors.password && <p className="text-red-500">{errors.password.message}</p>
+                            }
 
-                            <input
+                            <label className="font-semibold">Phone No</label>
+
+                            <input type="number"
                                 {...register("phone")}
                                 placeholder="Phone"
                                 className="input input-bordered w-full"
                             />
+
+
+                            <label className="font-semibold">Photo</label>
 
                             <input
                                 {...register("photo", { required: "Photo is required" })}

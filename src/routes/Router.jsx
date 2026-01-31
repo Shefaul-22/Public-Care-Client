@@ -55,10 +55,11 @@ export const router = createBrowserRouter([
                 loader: () => fetch('/serviceCenter.json').then(res => res.json())
             },
 
-            {
-                path: "profile",
-                element: <PrivateRoute><ProfilePage></ProfilePage></PrivateRoute>
-            },
+            // {
+            //     path: "profile",
+            //     element: <PrivateRoute><ProfilePage></ProfilePage></PrivateRoute>
+            // },
+            
             {
                 path: "updateProfile",
                 element: <PrivateRoute><UpdateProfile></UpdateProfile></PrivateRoute>
@@ -109,6 +110,13 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><MyIssues></MyIssues></PrivateRoute>
             },
 
+            {
+
+                path: "profile",
+                element: <PrivateRoute><ProfilePage></ProfilePage></PrivateRoute>
+
+            },
+
             // {
             //     path: "payment-history",
             //     Component: PaymentHistory
@@ -141,6 +149,8 @@ export const router = createBrowserRouter([
                 path: "staff-assigned-issues",
                 element: <PrivateRoute><AssignedIssues></AssignedIssues></PrivateRoute>
             },
+
+
 
 
 
