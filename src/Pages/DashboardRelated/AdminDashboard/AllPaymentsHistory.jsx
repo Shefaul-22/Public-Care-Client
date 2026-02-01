@@ -4,8 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/Loading/Loading";
+import useRole from "../../../hooks/useRole";
 
 const AllPaymentsHistory = () => {
+
+    const { role } = useRole();
+
     const axiosSecure = useAxiosSecure();
 
     // const [selectedMonth, setSelectedMonth] = useState("");
@@ -48,8 +52,10 @@ const AllPaymentsHistory = () => {
     if (isLoading) return <Loading></Loading>;
 
     return (
-        <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Payments</h2>
+
+        <div className="p-2 md:p-4 lg:p-6 w-full max-w-full">
+
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">All Payments </h2>
 
             {/* filter */}
             <div className="mb-4">
@@ -60,39 +66,67 @@ const AllPaymentsHistory = () => {
                     value={selectedMonth}
                     onChange={(e) => {
                         setSelectedMonth(e.target.value);
-                        setPage(1); 
+                        setPage(1);
                     }}
                 />
             </div>
 
 
-            <div className="overflow-x-auto mb-6">
-                <table className="table table-zebra">
+            <div className=" mb-6">
+                <table className="table table-zebra w-full table-fixed">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th className="w-1">#</th>
                             <th>Issue</th>
-                            <th>User</th>
+
+                            {
+                                (role === "admin") && <th>User</th>
+                            }
+
                             <th>Amount</th>
-                            <th>Status</th>
+
+                            {
+                                (role === "user" || role === "premiumUser") && <th className="w-18">Status</th>
+                            }
+
+
                             <th>Paid At</th>
+
+
                         </tr>
                     </thead>
                     <tbody>
-                        {payments.map((p, i) => (
-                            <tr key={p._id}>
-                                <td>{(currentPage - 1) * limit + i + 1}</td>
-                                <td>{p.title}</td>
-                                <td>{p.boostedBy}</td>
-                                <td>{p.amount} {p.currency}</td>
-                                <td>
-                                    <span className="badge badge-success">
-                                        {p.paymentStatus}
-                                    </span>
-                                </td>
-                                <td>{new Date(p.paidAt).toLocaleString()}</td>
-                            </tr>
-                        ))}
+
+                        {
+                            payments.map((p, i) => (
+
+                                <tr key={p._id}>
+
+                                    <td className="w-1">{(currentPage - 1) * limit + i + 1}</td>
+
+                                    <td className="break-words max-w-[100px]">{p.title}</td>
+
+
+
+                                    {
+                                        (role === "admin") && <td className="break-words max-w-[140px]">{p.boostedBy}</td>
+                                    }
+
+                                    <td>{p.amount} {p.currency}</td>
+
+                                    {
+                                        (role === "user" || role === "premiumUser") &&
+
+                                        <td>
+                                            <span className="badge badge-success">
+                                                {p.paymentStatus}
+                                            </span>
+                                        </td>
+                                    }
+
+                                    <td>{new Date(p.paidAt).toLocaleString()}</td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
 
@@ -127,7 +161,7 @@ const AllPaymentsHistory = () => {
             </div>
 
             {/* charts */}
-            <h3 className="text-xl font-semibold mb-3">Monthly Payments</h3>
+            <h3 className="text-xl md:text-3xl lg:text-4xl font-semibold mb-3">Monthly Payments</h3>
 
             <div className="w-full h-80">
                 <ResponsiveContainer>

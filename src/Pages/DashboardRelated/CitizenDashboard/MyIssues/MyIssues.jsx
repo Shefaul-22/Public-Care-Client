@@ -27,6 +27,8 @@ const MyIssues = () => {
         },
     });
 
+    // console.log(issues);
+
     const handleDelete = async (issueId) => {
 
         const confirm = await Swal.fire({
@@ -57,13 +59,15 @@ const MyIssues = () => {
     if (isLoading) return <Loading />;
 
     return (
+
         <div>
-            <h2 className="text-3xl mb-4">My Issues: {issues.length}</h2>
+
+            <h2 className="text-2xl md:text-4xl lg:text-5xl mb-4">My submitted Issues : {issues.length}</h2>
 
             {/* Filters */}
             <div className="flex gap-4 mb-4">
                 <select
-                    className="select select-sm select-bordered"
+                    className="select select-sm select-bordered flex-1"
                     value={filters.status}
                     onChange={(e) => setFilters({ ...filters, status: e.target.value })}
                 >
@@ -76,7 +80,7 @@ const MyIssues = () => {
                 </select>
 
                 <select
-                    className="select select-sm select-bordered"
+                    className="select select-sm select-bordered flex-1"
                     value={filters.category}
                     onChange={(e) => setFilters({ ...filters, category: e.target.value })}
                 >
@@ -90,8 +94,8 @@ const MyIssues = () => {
             </div>
 
             {/* Issues Table */}
-            <div className="overflow-x-auto">
-                <table className="table table-zebra w-full">
+            <div className="">
+                <table className="table table-zebra w-full table-fixed">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -102,11 +106,14 @@ const MyIssues = () => {
                             <th>Actions</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         {issues.map((issue, i) => (
+
                             <tr key={issue._id}>
-                                <th>{i + 1}</th>
-                                <td>{issue.title}</td>
+
+                                <th className="w-1">{i + 1}</th>
+                                <td className="break-words max-w-[100px]">{issue.title}</td>
                                 <td>{issue.status}</td>
                                 <td>{issue.category}</td>
                                 <td>
@@ -120,7 +127,8 @@ const MyIssues = () => {
                                         {issue.priority}
                                     </span>
                                 </td>
-                                <td className="flex gap-2">
+
+                                <td className="flex flex-col md:flex-row gap-1 md:gap-3">
                                     {issue.status === "pending" && (
                                         <button
                                             className="btn btn-sm btn-warning"
@@ -136,7 +144,7 @@ const MyIssues = () => {
                                         Delete
                                     </button>
                                     <button
-                                        className="btn btn-sm btn-info"
+                                        className="btn btn-sm btn-info p-1"
                                         onClick={() => navigate(`/issues/${issue._id}`)}
                                     >
                                         View Details

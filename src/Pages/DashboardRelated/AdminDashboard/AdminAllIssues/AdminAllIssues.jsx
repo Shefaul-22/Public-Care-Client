@@ -44,68 +44,109 @@ const AdminAllIssues = () => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">All Issues</h2>
 
-            <table className="table table-zebra">
-                <thead>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">All Issues</h2>
+
+            <table className="table table-zebra w-full table-fixed text-sm md:text-base">
+
+                {/* <thead>
                     <tr>
                         <th>Title</th>
                         <th>Category</th>
                         <th>Status</th>
                         <th>Priority</th>
-                        <th>Assigned Staff</th>
+                        <th className="wrap-break-word ">Assigned Staff</th>
                         <th>Actions</th>
+                    </tr>
+                </thead> */}
+
+                <thead>
+                    <tr >
+                        <th className="whitespace-normal ">
+                            Title
+                        </th>
+
+                        <th className="whitespace-normal ">
+                            Category
+                        </th>
+
+                        <th className="whitespace-normal  ">
+                            Status
+                        </th>
+
+                        <th className="whitespace-normal  hidden md:block">
+                            Priority
+                        </th>
+
+                        <th className="whitespace-normal  max-w-[100px] ">
+                            Assigned Staff
+                        </th>
+
+                        <th className="whitespace-normal  ">
+                            Actions
+                        </th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {issues.map(issue => (
-                        <tr key={issue._id}>
-                            <td>{issue.title}</td>
-                            <td>{issue.category}</td>
-                            <td>{issue.status}</td>
-                            <td> {issue.priority}
-                                {/* {issue.priority === "high"
-                                    ? <span className="badge badge-error">High</span>
-                                    : "Normal"} */}
-                            </td>
-                            <td>
-                                {issue.staffEmail
-                                    ? issue.staffName
-                                    : "Not Assigned"}
-                            </td>
-                            <td className="space-x-2">
-                                {!issue.staffEmail && (
-                                    <button
-                                        className="btn btn-sm btn-primary"
-                                        onClick={() => setSelectedIssue(issue)}
-                                    >
-                                        Assign Staff
-                                    </button>
-                                )}
 
-                                {
-                                    issue.status === "pending" ? (
+                    {
+                        issues.map(issue => (
 
+                            <tr key={issue._id}>
+
+                                <td className="whitespace-normal max-w-[120px]">{issue.title}</td>
+                                <td>{issue.category}</td>
+
+                                <td>{issue.status}</td>
+
+                                <td className="hidden md:block"> 
+                                    {
+                                        issue.priority === "high"
+                                            ? <span className="badge badge-error">High</span>
+                                            : "Normal"
+                                    }
+                                </td>
+
+                                <td>
+                                    {issue.staffEmail
+                                        ? issue.staffName
+                                        : "Not Assigned"
+                                    }
+                                </td>
+
+                                <td className="space-x-2 space-y-2">
+                                    {!issue.staffEmail && (
                                         <button
-                                            className="btn btn-sm btn-error"
-                                            onClick={() => handleReject(issue._id)}
+                                            className="btn btn-sm btn-primary"
+                                            onClick={() => setSelectedIssue(issue)}
                                         >
-                                            Reject
+                                            Assign Staff
                                         </button>
-                                    ) : issue.status === "closed" ?
-                                        <span>Issue Resolved & Closed</span>
+                                    )}
 
-                                        : issue.status === "rejected" ?
+                                    {
+                                        issue.status === "pending" ? (
 
-                                            <span>Issue Rejected</span>
-                                            :
-                                            <span>Issue on Progress</span>
+                                            <button
+                                                className="btn btn-sm btn-error"
+                                                onClick={() => handleReject(issue._id)}
+                                            >
+                                                Reject
+                                            </button>
+                                        ) : issue.status === "closed" ?
+                                            <span>Issue Resolved & Closed</span>
 
-                                }
-                            </td>
-                        </tr>
-                    ))}
+                                            : issue.status === "rejected" ?
+
+                                                <span>Issue Rejected</span>
+                                                :
+                                                <span>Issue on Progress</span>
+
+                                    }
+                                </td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
 

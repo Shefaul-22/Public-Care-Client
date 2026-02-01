@@ -88,8 +88,11 @@ const AddStaff = () => {
             {/* Modal */}
             {isOpen && (
                 <dialog open className="modal">
+
                     <div className="modal-box">
+
                         <h3 className="font-bold text-lg mb-4">Add New Staff</h3>
+                        
                         <form onSubmit={handleSubmit(handleAddStaff)} className="space-y-3">
 
                             <label className="font-semibold">Name</label>
