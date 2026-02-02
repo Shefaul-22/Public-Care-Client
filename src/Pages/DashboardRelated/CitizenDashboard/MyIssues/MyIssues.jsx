@@ -113,7 +113,7 @@ const MyIssues = () => {
                             <tr key={issue._id}>
 
                                 <th className="w-1">{i + 1}</th>
-                                <td className="break-words max-w-[100px]">{issue.title}</td>
+                                <td className="whitespace-normal max-w-[100px]">{issue.title}</td>
                                 <td>{issue.status}</td>
                                 <td>{issue.category}</td>
                                 <td>

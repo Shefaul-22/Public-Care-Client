@@ -46,7 +46,7 @@ const AdminDashboardHome = () => {
 
     return (
         <div className="p-6 space-y-10">
-            <h2 className="text-2xl font-bold">Admin Dashboard</h2>
+            <h2 className="text-2xl md:text-4xl text-center font-bold">Admin Dashboard Home</h2>
 
             {/* stats card */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -64,7 +64,7 @@ const AdminDashboardHome = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                
-                <div className="bg-white rounded shadow p-4">
+                <div className="bg-base-200 rounded shadow p-4">
                     <h3 className="text-lg font-semibold mb-4">
                         Issues by Status
                     </h3>
@@ -81,7 +81,7 @@ const AdminDashboardHome = () => {
                 </div>
 
                 {/* Payment Chart */}
-                <div className="bg-white rounded shadow p-4">
+                <div className="bg-base-200 rounded shadow p-4">
                     <h3 className="text-lg font-semibold mb-4">
                         Monthly Payments
                     </h3>
@@ -102,7 +102,7 @@ const AdminDashboardHome = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {/* Latest Issues */}
-                <div className="bg-white rounded shadow p-4">
+                <div className="bg-base-200 rounded shadow p-4">
                     <h3 className="font-semibold mb-3">Latest Issues</h3>
                     <ul className="space-y-2 text-sm">
                         {latestIssues.map(issue => (
@@ -119,7 +119,7 @@ const AdminDashboardHome = () => {
                 {/* Latest Payments */}
 
 
-                <div className="bg-white rounded shadow p-4">
+                <div className="bg-base-200 rounded shadow p-4">
 
 
                     <h3 className="font-semibold mb-3">Latest Payments</h3>
@@ -140,7 +140,7 @@ const AdminDashboardHome = () => {
 
                 {/* Latest Users */}
 
-                <div className="bg-white rounded shadow p-4">
+                <div className="bg-base-200 rounded shadow p-4">
 
                     <h3 className="font-semibold mb-3">Latest Users</h3>
                     <ul className="space-y-2 text-sm">

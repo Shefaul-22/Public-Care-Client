@@ -11,19 +11,23 @@ import Loading from "../../components/Loading/Loading";
 import EditIssueModal from "../DashboardRelated/CitizenDashboard/MyIssues/EditIssueModal";
 import Timeline from "./Timeline";
 import { handleBlockedError } from "../../utils/handleBlockedError";
+import { useQuery } from "@tanstack/react-query";
 
 const statusColors = {
-  Pending: "bg-yellow-500",
-  "In-Progress": "bg-blue-500",
-  Resolved: "bg-green-500",
-  Closed: "bg-gray-500"
+  pending: "bg-yellow-500",
+  "in-progress": "bg-blue-500",
+  resolved: "bg-green-500",
+  closed: "bg-gray-500"
 };
 
 const IssueDetails = () => {
+
   const { id } = useParams();
   const { user, loading } = UseAuth();
   const axiosSecure = useAxiosSecure();
+
   const navigate = useNavigate();
+
   const [issue, setIssue] = useState(null);
   const [editIssue, setEditIssue] = useState(null);
 
@@ -62,15 +66,27 @@ const IssueDetails = () => {
 
 
 
-
-
   // console.log('Boosting issue:', issue);
 
 
+  const { data: assignStaff = [] } = useQuery({
+
+    queryKey: ["assign-staff"],
+
+    queryFn: async () => {
+
+      const res = await axiosSecure.get(`/users?email=${issue.staffEmail}`);
+      return res.data;
+
+    }
+  })
 
   if (!issue || loading) return <Loading></Loading>
   console.log(issue);
+
+
   // console.log(user?.email, issue);
+
   const isCreator = user?.email === issue.senderEmail;
   const canEdit = isCreator && issue.status === "pending";
   const canDelete = isCreator;
@@ -160,48 +176,108 @@ const IssueDetails = () => {
   };
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold mb-2">{issue.title}</h2>
-      <div className="flex items-center gap-4 mb-4">
-        <span className={`px-2 py-1 text-white text-xs rounded ${statusColors[issue.status]}`}>
-          {issue.status}
-        </span>
 
-        <span className={`px-2 py-1 text-white text-xs rounded ${issue.priority === "high" ? "bg-red-500" : "bg-gray-500"}`}>
-          {issue.priority === "high" ? "Boosted" : "Normal"}
-        </span>
+    <div className="p-4 w-full">
+
+      <h2 className="text-3xl md:text-4xl lg:text-5xl my-4 md:my-6 lg:my-8 text-center">Issue Details Page</h2>
+
+      <div className="flex  flex-col md:flex-row gap-3 md:gap-6">
+
+        <div className="flex-1 ">
+          <h2 className="text-3xl font-bold mb-2">Issue Name : {issue.title}</h2>
+
+
+          <p className="mb-2"><strong>Category:</strong> {issue.category}</p>
+
+          <p className="mb-2 break-all">
+            Description: {issue.issueDescription}
+          </p>
+
+        </div>
+
+        <div className="relative  my-4 flex-1">
+          {/* Issue Image */}
+          <img
+            src={issue.photoURL}
+            alt={issue.issueName}
+            className="w-full  object-cover rounded-lg"
+          />
+
+          {/* Status , prioroty badge */}
+          <div className="absolute top-2 right-2 flex justify-between gap-3">
+            <span
+              className={`px-3 py-2 text-white text-xs rounded ${statusColors[issue.status]}`}
+            >
+              {issue.status}
+            </span>
+
+            <span
+              className={`px-3 py-2 text-white text-xs rounded ${issue.priority === "high" ? "bg-red-500" : "bg-gray-500"
+                }`}
+            >
+              {issue.priority === "high" ? "Boosted" : "Not Boosted"}
+
+            </span>
+
+            <span
+              className={`px-3 py-2 text-white text-xs rounded ${issue.priority === "high" ? "bg-warning" : "bg-gray-500"
+                }`}
+            >
+              {issue.priority === "high" ? "High" : "Normal"}
+
+            </span>
+
+          </div>
+        </div>
 
       </div>
 
-      <p className="mb-2"><strong>Category:</strong> {issue.category}</p>
-      <p className="mb-2"><strong>Description:</strong> {issue.issueDescription}</p>
-
-      <img src={issue.photoURL} alt={issue.issueName} className="w-64 h-64 object-cover my-4 rounded" />
-
-      {issue.staffId && (
-        <div className="mb-4 p-4 border rounded">
-          <h3 className="font-semibold">Assigned Staff</h3>
-          <p>Name: {issue.staffName}</p>
-          <p> {issue.statusMessage}</p>
-        </div>
-      )}
-
-      <div className="flex gap-3 mb-6">
+      <div className="flex gap-3 mb-6 right-2">
 
         {
-          canEdit && <button onClick={() => setEditIssue(issue)} className="btn btn-primary">Edit</button>
+          canEdit && <button onClick={() => setEditIssue(issue)} className="btn w-full btn-primary flex-1">Edit</button>
         }
 
         {
-          canDelete && <button onClick={handleDelete} className="btn btn-error">Delete</button>
+          canDelete && <button onClick={handleDelete} className="btn w-full btn-error flex-1">Delete</button>
         }
 
         {
           (issue.status !== "resolved" && issue.status !== "closed") &&
-          (canBoost && <button onClick={() => handleBoost(issue)} className="btn btn-warning">Boost Priority</button>)
+          (canBoost && <button onClick={() => handleBoost(issue)} className="btn w-full btn-warning flex-1">Boost Priority</button>)
         }
 
       </div>
+
+
+      {
+        issue.staffId && (
+          <div className="mb-6 p-4 border rounded-lg shadow-md bg-white flex items-center gap-4">
+            <img
+              src={assignStaff.photoURL || "/default-avatar.png"}
+              alt={issue.staffName}
+              className="w-16 h-16 rounded-full object-cover"
+            />
+
+            <div className="flex-1">
+              <h3 className="font-bold text-lg">{issue.staffName}</h3>
+              <p className="text-sm text-gray-600">{issue.staffEmail}</p>
+              {issue.staffPhone && <p className="text-sm text-gray-600">Phone: {issue.staffPhone}</p>}
+              <p className="mt-1 text-sm">
+                Status Message: <span className="text-gray-800 font-medium">{issue.statusMessage}</span>
+              </p>
+            </div>
+
+            <div>
+              <span className={`px-2 py-1 text-xs font-semibold  rounded ${statusColors[issue.status]}`}>
+                {issue.status}
+              </span>
+            </div>
+          </div>
+        )}
+
+
+
 
       {
         editIssue && (

@@ -34,10 +34,10 @@ const ManageStaffs = () => {
                     await axiosSecure.delete(`/admin/staffs/${staff._id}`);
                     Swal.fire(
                         "Deleted!",
-                         "Staff has been deleted.", 
-                         "success"
-                        );
-                    
+                        "Staff has been deleted.",
+                        "success"
+                    );
+
                     refetch();
 
                 } catch (error) {
@@ -75,45 +75,50 @@ const ManageStaffs = () => {
     if (isLoading) return <Loading></Loading>
 
     return (
-        <div className="overflow-x-auto mt-6">
-            <table className="table table-zebra w-full">
+        <div className=" mt-6">
+            <table className="table table-zebra w-full table-fixed">
                 <thead>
                     <tr>
-                        <th>Photo</th>
+                        <th className="hidden md:table-cell">Photo</th>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th className="hidden md:table-cell">Email</th>
                         <th>Phone</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {staffs.map((staff) => (
 
-                        <tr key={staff._id}>
-                            <td>
-                                <img src={staff.photoURL} alt={staff.name} className="w-12 h-12 rounded-full" />
-                            </td>
+                    {
+                        staffs.map((staff) => (
 
-                            <td>{staff.displayName}</td>
-                            <td>{staff.email}</td>
-                            <td>{staff.phone || "-"}</td>
+                            <tr key={staff._id}>
 
-                            <td>
-                                <button onClick={() => handleUpdate(staff)} className="btn btn-sm btn-info mr-2">
-                                    Update
-                                </button>
-                                <button onClick={() => handleDelete(staff)} className="btn btn-sm btn-error">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
+                                <td className="w-14 h-14 hidden md:table-cell">
+                                    <img src={staff.photoURL} alt={staff.name} className="w-12 h-12 rounded-full" />
+                                </td>
+
+                                <td className="whitespace-normal break-all">{staff.displayName || "N/A"}</td>
+
+                                <td className="hidden md:table-cell max-w-44">{staff.email}</td>
+                                <td>{staff.phone || "N/A"}</td>
+
+                                <td className="flex flex-col gap-2 md:flex-row">
+                                    <button onClick={() => handleUpdate(staff)} className="btn btn-sm btn-info mr-2">
+                                        Update
+                                    </button>
+                                    <button onClick={() => handleDelete(staff)} className="btn btn-sm btn-error mr-2">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
 
             {/* Update Modal */}
             {editStaff && (
+
                 <dialog open className="modal">
                     <div className="modal-box">
                         <h3 className="font-bold text-lg mb-4">Update Staff</h3>
@@ -128,7 +133,7 @@ const ManageStaffs = () => {
                             />
 
                             <label className="font-semibold">Phone</label>
-                            
+
                             <input type="number"
                                 defaultValue={editStaff.phone || ""}
                                 name="phone"

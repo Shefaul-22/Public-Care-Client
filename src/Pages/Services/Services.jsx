@@ -5,11 +5,12 @@ const Services = () => {
     return (
 
         <div className='space-y-5 md:space-y-10'>
-            <h2 className="text-4xl font-bold text-center mt-4 md:mt-8">
+
+            <h2 className="text-3xl md:text-5xl font-bold text-center mt-4 md:mt-8">
                 Civic Services We Offer
             </h2>
 
-            <div className="flex flex-col-reverse md:flex-row-reverse  gap-10 p-4  rounded-lg shadow-md">
+            <div className="flex flex-col-reverse md:flex-row-reverse  gap-10 p-4  rounded-lg shadow-xl bg-gray-200">
 
                 <div className='flex-1'>
                     {/* Image */}
@@ -22,11 +23,11 @@ const Services = () => {
 
 
                 <div className="text-center sm:text-left flex-1">
-                    <h4 className="text-3xl font-semibold mb-2">
+                    <h4 className="text-3xl md:text-4xl font-semibold mb-2">
                         Repair Potholes
                     </h4>
 
-                    <p className="  ">
+                    <p className=" text-base md:text-xl">
 
                         We quickly identify and repair dangerous potholes to ensure safer
                         roads and smoother travel for all citizens. You can report potholes
@@ -40,7 +41,7 @@ const Services = () => {
 
             </div>
 
-            <div className="flex flex-col sm:flex-row-reverse   gap-10 p-4  rounded-lg shadow-md">
+            <div className="flex flex-col sm:flex-row-reverse   gap-10 p-4  rounded-lg  shadow-xl bg-gray-200">
 
 
                 <div className="text-center sm:text-left flex-1">
@@ -48,7 +49,7 @@ const Services = () => {
                         Romove garbase overflow
                     </h4>
 
-                    <p className="  ">
+                    <p className=" text-base md:text-xl ">
 
                         We respond promptly to garbage overflow issues to maintain a clean
                         and healthy environment. Residents can report waste problems and
@@ -69,7 +70,7 @@ const Services = () => {
 
             </div>
 
-            <div className="flex flex-col-reverse md:flex-row-reverse  gap-10 p-4  rounded-lg shadow-md">
+            <div className="flex flex-col-reverse md:flex-row-reverse  gap-10 p-4  rounded-lg shadow-xl bg-gray-200">
 
                 <div className='flex-1'>
                     {/* Image */}
@@ -86,7 +87,7 @@ const Services = () => {
                         Repair Streetlights
                     </h4>
 
-                    <p className="  ">
+                    <p className="text-base md:text-xl  ">
 
                         Faulty or broken streetlights are repaired quickly to ensure public
                         safety at night. Citizens can report non-functioning lights with
@@ -99,7 +100,7 @@ const Services = () => {
 
 
 
-            <div className="flex flex-col-reverse md:flex-row-reverse  gap-10 p-4  rounded-lg shadow-md">
+            <div className="flex  flex-col md:flex-row-reverse gap-10 p-4  rounded-lg shadow-xl bg-gray-200">
 
 
                 <div className="text-center sm:text-left flex-1">
@@ -107,7 +108,7 @@ const Services = () => {
                         Fix Water Leakage
                     </h4>
 
-                    <p className="  ">
+                    <p className=" text-base md:text-xl ">
 
                         We address water leakage issues efficiently to reduce water waste
                         and infrastructure damage. Users can report leaks in pipelines or
@@ -129,7 +130,7 @@ const Services = () => {
             </div>
 
 
-            <div className="flex flex-col-reverse md:flex-row-reverse  gap-10 p-4  rounded-lg shadow-md">
+            <div className="flex flex-col-reverse md:flex-row-reverse  gap-10 p-4  rounded-lg shadow-xl bg-gray-200">
 
                 <div className='flex-1'>
                     {/* Image */}
@@ -146,7 +147,7 @@ const Services = () => {
                         Repaire Damage Footpaths
                     </h4>
 
-                    <p className="  ">
+                    <p className=" text-base md:text-xl ">
 
                         Damaged footpaths are repaired to ensure safe and comfortable
                         walking for pedestrians. Citizens can report broken or uneven

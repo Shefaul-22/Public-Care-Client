@@ -72,16 +72,17 @@ const ManageUsers = () => {
 
     return (
         <div className="overflow-x-auto mt-6">
-            <h2 className="text-2xl font-bold mb-4">Manage Users</h2>
 
-            <table className="table table-zebra w-full">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4">Manage Users</h2>
+
+            <table className="table table-zebra w-full table-fixed">
                 <thead>
                     <tr>
                         <th>Photo</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Subscription</th>
-                        <th>Status</th>
+                        <th className="hidden md:table-cell">Subscription</th>
+                        <th className="hidden md:table-cell">Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -89,7 +90,7 @@ const ManageUsers = () => {
                 <tbody>
                     {users.map((user) => (
                         <tr key={user._id}>
-                            <td>
+                            <td className="w-12 h-12">
                                 <img
                                     src={user.photoURL}
                                     alt="user"
@@ -98,10 +99,11 @@ const ManageUsers = () => {
                             </td>
 
                             <td>{user.displayName || "N/A"}</td>
-                            <td>{user.email}</td>
+
+                            <td className="whitespace-normal break-all">{user.email}</td>
 
                             {/* Subscription info */}
-                            <td>
+                            <td className="hidden md:table-cell">
                                 {user.isPremium ? (
                                     <span className="badge badge-success">Premium</span>
                                 ) : (
@@ -110,7 +112,7 @@ const ManageUsers = () => {
                             </td>
 
                             {/* User status */}
-                            <td>
+                            <td className="hidden md:table-cell">
                                 {user.userStatus === "blocked" ? (
                                     <span className="badge badge-error">Blocked</span>
                                 ) : (

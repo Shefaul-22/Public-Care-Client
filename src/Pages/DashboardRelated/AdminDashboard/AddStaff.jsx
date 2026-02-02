@@ -76,7 +76,7 @@ const AddStaff = () => {
         <div className="p-6">
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Manage Staff</h2>
+                <h2 className="text-2xl md:text-4xl  font-bold">Manage Staffs</h2>
                 <button onClick={() => setIsOpen(true)} className="btn btn-primary">
                     Add Staff
                 </button>

@@ -81,82 +81,92 @@ const AssignedIssues = () => {
             </h2>
 
             {/* Issues Table */}
-            <div className="overflow-x-auto">
-                <table className="table table-zebra w-full">
+            <div className="mb-4">
+
+                <table className="table table-zebra w-full table-fixed">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th className="w-2">#</th>
                             <th>Title</th>
                             <th>Status</th>
                             <th>Priority</th>
                             <th>Action</th>
                         </tr>
+
                     </thead>
+
+
                     <tbody>
-                        {issues.map((issue, i) => (
-                            <tr key={issue._id}>
-                                <th>{i + 1}</th>
-                                <td>{issue.title}</td>
-                                <td>{issue.status}</td>
-                                <td>
-                                    <span className={issue.priority === 'high' ? 'badge badge-error' : 'badge badge-ghost'}>
-                                        {issue.priority}
-                                    </span>
-                                </td>
-                                <td className="flex gap-2">
+                        {
+                            issues.map((issue, i) => (
 
-                                    {
-                                        issue.status !== "closed" ? (
+                                <tr key={issue._id}>
+
+                                    <th className="w-2">{i + 1}</th>
+
+                                    <td className="whitespace-normal">{issue.title}</td>
+                                    <td>{issue.status}</td>
+
+                                    <td>
+                                        <span className={issue.priority === 'high' ? 'badge badge-error' : 'badge badge-ghost'}>
+                                            {issue.priority}
+                                        </span>
+                                    </td>
+
+                                    <td className="flex gap-2">
+
+                                        {
+                                            issue.status !== "closed" ? (
 
 
-                                            <div className="relative inline-block">
-                                                {/* Button to toggle dropdown */}
-                                                <button
-                                                    className="btn btn-sm btn-primary flex items-center"
-                                                    onClick={() => setOpenRowId(openRowId === issue._id ? null : issue._id)}
-                                                >
-                                                    Change Status
-                                                </button>
-
-                                                {/* Dropdown Select */}
-
-                                                {openRowId === issue._id && (
-                                                    <select
-                                                        className="absolute top-full mt-1 left-0 w-40 select select-sm select-primary z-20"
-                                                        value={issue.status}
-                                                        onChange={(e) => {
-                                                            handleStatusChange(issue, e.target.value);
-                                                            setOpenRowId(null);
-                                                        }}
+                                                <div className="relative inline-block">
+                                                    {/* Button to toggle dropdown */}
+                                                    <button
+                                                        className="btn btn-sm btn-primary flex items-center"
+                                                        onClick={() => setOpenRowId(openRowId === issue._id ? null : issue._id)}
                                                     >
-                                                        {statusOptions.map((status) => {
-                                                            const isCurrent = status.value === issue.status;
-                                                            const isAllowedNext =
-                                                                allowedTransitions[issue.status]?.includes(status.value);
+                                                        Change Status
+                                                    </button>
 
-                                                            return (
-                                                                <option
-                                                                    key={status.value}
-                                                                    value={status.value}
-                                                                    disabled={!isCurrent && !isAllowedNext}
-                                                                >
-                                                                    {status.label}
-                                                                </option>
-                                                            );
-                                                        })}
-                                                    </select>
+                                                    {/* Dropdown Select */}
 
-                                                )}
+                                                    {openRowId === issue._id && (
+                                                        <select
+                                                            className="absolute top-full mt-1 left-0 w-40 select select-sm select-primary z-20"
+                                                            value={issue.status}
+                                                            onChange={(e) => {
+                                                                handleStatusChange(issue, e.target.value);
+                                                                setOpenRowId(null);
+                                                            }}
+                                                        >
+                                                            {statusOptions.map((status) => {
+                                                                const isCurrent = status.value === issue.status;
+                                                                const isAllowedNext =
+                                                                    allowedTransitions[issue.status]?.includes(status.value);
 
-                                            </div>
+                                                                return (
+                                                                    <option
+                                                                        key={status.value}
+                                                                        value={status.value}
+                                                                        disabled={!isCurrent && !isAllowedNext}
+                                                                    >
+                                                                        {status.label}
+                                                                    </option>
+                                                                );
+                                                            })}
+                                                        </select>
 
-                                        ) : (
-                                            <span className="text-green-600">Completed</span>
-                                        )
-                                    }
-                                </td>
-                            </tr>
-                        ))}
+                                                    )}
+
+                                                </div>
+
+                                            ) : (
+                                                <span className="text-green-600">Completed</span>
+                                            )
+                                        }
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>

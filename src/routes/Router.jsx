@@ -12,7 +12,7 @@ import ReportIssue from "../Pages/ReportIssue/ReportIssue";
 import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../Pages/DashboardRelated/DashboardHome/DashboardHome";
 
-import PaymentHistory from "../Pages/DashboardRelated/PaymentHistory/PaymentHistory";
+
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 
 
@@ -52,7 +52,8 @@ export const router = createBrowserRouter([
 
             {
                 path: "service-centers",
-                Component: ServiceCenters
+                Component: ServiceCenters,
+                loader: () => fetch('/serviceCenter.json').then(res => res.json())
 
             },
 
