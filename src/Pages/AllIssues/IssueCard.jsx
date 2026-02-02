@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 
 import Swal from "sweetalert2";
 
-const IssueCard = ({ issue, user, refetch,  axiosSecure }) => {
+const IssueCard = ({ issue, user, refetch, axiosSecure }) => {
 
     // console.log(user,issue);
 
@@ -19,9 +19,10 @@ const IssueCard = ({ issue, user, refetch,  axiosSecure }) => {
         }
 
         if (issue.senderEmail === user.email) {
+
             Swal.fire(
-                "Not allowed", 
-                "You cannot upvote your own issue", 
+                "Not allowed",
+                "You cannot upvote your own issue",
                 "warning"
             );
 
@@ -31,6 +32,7 @@ const IssueCard = ({ issue, user, refetch,  axiosSecure }) => {
         try {
             await axiosSecure.patch(`/issues/${issue._id}/upvote`);
             refetch();
+
         } catch (err) {
             Swal.fire(
                 "Error",
@@ -41,24 +43,20 @@ const IssueCard = ({ issue, user, refetch,  axiosSecure }) => {
     };
 
     return (
-        <div className="card bg-base-200 shadow-md border">
 
-            <figure className="h-40">
+        <div className="card bg-base-200 shadow-lg ">
+
+            <div className="p-2 relative">
                 <img
                     src={issue.photoURL}
                     alt={issue.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-80 object-cover rounded-md"
                 />
-            </figure>
-
-            <div className="card-body p-4">
-
-                <h2 className="card-title">{issue.title}</h2>
-                <p className="text-sm text-gray-500">{issue.category}</p>
 
                 {/* Status + Priority */}
-                <div className="flex gap-2 my-2">
-                    <span className={`badge
+                <div className=" absolute top-2 right-4 flex gap-2 my-2 justify-between">
+
+                    <span className={`badge px-3 py-2
                         ${issue.status === "pending" && "badge-warning"}
                         ${issue.status === "resolved" && "badge-success"}
                         ${issue.status === "in-progress" && "badge-info"}
@@ -69,17 +67,27 @@ const IssueCard = ({ issue, user, refetch,  axiosSecure }) => {
                     <span
                         className={
                             issue.priority === "high"
-                                ? "badge badge-error"
-                                : "badge badge-outline"
+                                ? "badge badge-error px-3 py-2"
+                                : "badge badge-ghost px-3 py-2"
                         }
                     >
                         {issue.priority}
                     </span>
                 </div>
+            </div>
+
+            <div className=" p-4 w-full">
+
+                <div className='flex gap-2 justify-between w-full mb-2 md:mb-3'>
+                    <h2 className="text-xl">{issue.title}</h2>
+                    <p className="text-xl text-gray-800">{issue.category}</p>
+                </div>
+
+
 
                 {/* Location */}
                 <p className="text-sm flex items-center gap-2">
-                    <IoLocationSharp size={24}/> {issue.senderDistrict}, {issue.senderRegion}
+                    <IoLocationSharp size={24} /> {issue.senderDistrict}, {issue.senderRegion}
                 </p>
 
                 {/* Actions */}
@@ -88,7 +96,7 @@ const IssueCard = ({ issue, user, refetch,  axiosSecure }) => {
                         onClick={handleUpvote}
                         className="btn flex items-center gap-3 text-blue-600 bg-gray-200"
                     >
-                        <AiFillLike size={24}/> <span className='text-xl font-semibold'>{issue.upvotes || 0}</span>
+                        <AiFillLike size={24} /> <span className='text-xl font-semibold'>{issue.upvotes || 0}</span>
                     </button>
 
                     <button
@@ -99,6 +107,7 @@ const IssueCard = ({ issue, user, refetch,  axiosSecure }) => {
                     </button>
                 </div>
             </div>
+
         </div>
     );
 };

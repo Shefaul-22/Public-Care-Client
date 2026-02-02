@@ -187,10 +187,10 @@ const IssueDetails = () => {
           <h2 className="text-3xl font-bold mb-2">Issue Name : {issue.title}</h2>
 
 
-          <p className="mb-2"><strong>Category:</strong> {issue.category}</p>
+          <p className="mb-2 text-xl"><strong>Category :</strong> {issue.category}</p>
 
-          <p className="mb-2 break-all">
-            Description: {issue.issueDescription}
+          <p className="mb-2 break-all text-xl">
+            <strong>Description :</strong> {issue.issueDescription}
           </p>
 
         </div>
@@ -232,7 +232,7 @@ const IssueDetails = () => {
 
       </div>
 
-      <div className="flex gap-3 mb-6 right-2">
+      <div className="flex gap-3 my-6 md:mb-8 lg:mb-12 right-2">
 
         {
           canEdit && <button onClick={() => setEditIssue(issue)} className="btn w-full btn-primary flex-1">Edit</button>
@@ -252,27 +252,39 @@ const IssueDetails = () => {
 
       {
         issue.staffId && (
-          <div className="mb-6 p-4 border rounded-lg shadow-md bg-white flex items-center gap-4">
-            <img
-              src={assignStaff.photoURL || "/default-avatar.png"}
-              alt={issue.staffName}
-              className="w-16 h-16 rounded-full object-cover"
-            />
 
-            <div className="flex-1">
-              <h3 className="font-bold text-lg">{issue.staffName}</h3>
-              <p className="text-sm text-gray-600">{issue.staffEmail}</p>
-              {issue.staffPhone && <p className="text-sm text-gray-600">Phone: {issue.staffPhone}</p>}
-              <p className="mt-1 text-sm">
-                Status Message: <span className="text-gray-800 font-medium">{issue.statusMessage}</span>
-              </p>
+          <div className="my-4 md:my-8 lg:my-12">
+
+            <h3 className="text-2xl md:text-4xl mb-2">Assigned Staff Details : </h3>
+
+            <div className="mb-6 p-4 border rounded-lg shadow-md bg-base-200 flex flex-row  items-center gap-4">
+
+              <img
+                src={assignStaff.photoURL || "staffImg"}
+                alt={issue.staffName}
+                className="w-16 h-16 rounded-full object-cover"
+              />
+
+              <div className="flex-1">
+                <h3 className="font-bold text-lg">Staff Name : {issue.staffName}</h3>
+
+                {
+                  assignStaff.phone && <p className="text-md text-gray-600">Phone: {assignStaff.phone}</p>
+                }
+
+                <p className="mt-1 text-md">
+                  Status Message: <span className="text-gray-800 font-medium">{issue.statusMessage}</span>
+                </p>
+              </div>
+
+              <div>
+                <span className={`px-2 py-1 text-md font-semibold  rounded ${statusColors[issue.status]}`}>
+                  {issue.status}
+                </span>
+              </div>
+
             </div>
 
-            <div>
-              <span className={`px-2 py-1 text-xs font-semibold  rounded ${statusColors[issue.status]}`}>
-                {issue.status}
-              </span>
-            </div>
           </div>
         )}
 
@@ -299,7 +311,7 @@ const IssueDetails = () => {
         )
       }
 
-      <h2 className="text-xl font-semibold mb-2">Issue Timeline</h2>
+      <h2 className="text-2xl md:text-4xl  font-semibold mb-2">Issue Timeline</h2>
 
       <Timeline timeline={issue.timeline}>
 
