@@ -5,6 +5,8 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContai
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/Loading/Loading";
 import useRole from "../../../hooks/useRole";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import InvoicePDF from "../../../components/PaymentInvoice/InvoicePDF";
 
 const AllPaymentsHistory = () => {
 
@@ -92,9 +94,13 @@ const AllPaymentsHistory = () => {
 
                             <th>Paid At</th>
 
+                            <th className="w-12 md:w-32">Invoice</th>
 
                         </tr>
+
                     </thead>
+
+
                     <tbody>
 
                         {
@@ -109,7 +115,14 @@ const AllPaymentsHistory = () => {
 
 
                                     {
-                                        (role === "admin") && <td className="break-words">{p.boostedBy}</td>
+                                        (role === "admin") &&
+
+                                        <td className="break-words">
+                                            {/* {p.boostedBy} */}
+
+                                            {p?.boostedBy || p?.email}
+
+                                        </td>
                                     }
 
                                     <td>{p.amount} {p.currency}</td>
@@ -125,6 +138,27 @@ const AllPaymentsHistory = () => {
                                     }
 
                                     <td>{new Date(p.paidAt).toLocaleString()}</td>
+
+                                    {/* download invoice */}
+
+                                    <td>
+                                        
+                                        <PDFDownloadLink
+
+                                            document={
+
+                                                p ? <InvoicePDF payment={p} /> : null
+                                            }
+                                            fileName={`invoice-${p._id}.pdf`}
+                                            className="btn btn-xs btn-outline"
+                                        >
+                                            {
+                                                ({ loading }) =>
+                                                    loading ? "Generating..." : "Download"
+                                            }
+                                        </PDFDownloadLink>
+                                    </td>
+
                                 </tr>
                             ))}
                     </tbody>

@@ -25,6 +25,9 @@ import IssueDetails from "../Pages/IssueDetails/IssueDetails";
 import ManageUsers from "../Pages/DashboardRelated/AdminDashboard/ManageUsers";
 import AllPaymentsHistory from "../Pages/DashboardRelated/AdminDashboard/AllPaymentsHistory";
 import ServiceCenters from "../Pages/ServiceCenters/ServiceCenters";
+import AdminRoute from "./AdminRoute";
+import StaffRoute from "./StaffRoute";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 
 
 export const router = createBrowserRouter([
@@ -75,7 +78,7 @@ export const router = createBrowserRouter([
                 element: <IssueDetails></IssueDetails>
             }
 
-            
+
         ]
     },
 
@@ -130,17 +133,17 @@ export const router = createBrowserRouter([
             // admin related route
             {
                 path: "addStaff",
-                element: <PrivateRoute><AddStaff></AddStaff></PrivateRoute>
+                element: <PrivateRoute><AdminRoute><AddStaff></AddStaff></AdminRoute></PrivateRoute>
             },
 
             {
                 path: "admin-all-issues",
-                element: <PrivateRoute><AdminAllIssues></AdminAllIssues></PrivateRoute>
+                element: <PrivateRoute><AdminRoute><AdminAllIssues></AdminAllIssues></AdminRoute></PrivateRoute>
             },
 
             {
                 path: "manage-users",
-                element: <PrivateRoute><ManageUsers></ManageUsers></PrivateRoute>
+                element: <PrivateRoute><AdminRoute><ManageUsers></ManageUsers></AdminRoute></PrivateRoute>
             },
 
             {
@@ -152,16 +155,21 @@ export const router = createBrowserRouter([
 
             {
                 path: "staff-assigned-issues",
-                element: <PrivateRoute><AssignedIssues></AssignedIssues></PrivateRoute>
+                element: <PrivateRoute><StaffRoute><AssignedIssues></AssignedIssues></StaffRoute></PrivateRoute>
             },
 
 
 
 
 
-            
 
-            
+
+
         ]
+    },
+
+    {
+        path: "*",
+        element: <ErrorPage></ErrorPage>
     }
 ])

@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import ProfilePDF from './ProfilePDF';
 
 const ProfilePage = () => {
 
@@ -127,7 +129,7 @@ const ProfilePage = () => {
 
     return (
         <div className='bg-slate-50 py-6'>
-            <div className="max-w-4xl mx-auto bg-gray-300 shadow-lg rounded-2xl  p-12">
+            <div className="max-w-5xl mx-auto bg-gray-300 shadow-lg rounded-2xl  p-12">
 
                 <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 mb-6 ">
                     <img
@@ -235,69 +237,96 @@ const ProfilePage = () => {
                         <p className="mt-1 text-gray-900 text-sm">{user.metadata?.creationTime}</p>
                     </div>
                 </div>
+
+                {
+                    (userData.role === "user" || userData.role === "premiumUser") && (
+                        <div className="mt-6">
+
+                            <PDFDownloadLink
+                                document={
+                                    <ProfilePDF user={user} userData={userData} />
+                                }
+                                fileName={`profile-${user.uid}.pdf`}
+                            >
+                                {({ loading }) => (
+                                    <button
+                                        className="btn btn-outline btn-sm"
+                                        disabled={loading}
+                                    >
+                                        {loading ? "Generating..." : "Download Profile PDF"}
+                                    </button>
+                                )}
+                            </PDFDownloadLink>
+                        </div>
+                    )
+                }
+
             </div >
 
-            {isOpen && (
-                <dialog open className="modal">
-                    <div className="modal-box">
-                        <h3 className="font-bold text-lg mb-4">Update Profile</h3>
+            {/* modal */}
 
-                        <form
-                            onSubmit={handleSubmit(handleProfileUpdate)}
-                            className="space-y-3"
-                        >
-                            {/* Name */}
-                            <label className="font-semibold">Name</label>
-                            <input
-                                defaultValue={user.displayName}
-                                {...register("name", { required: "Name is required" })}
-                                placeholder="Full Name"
-                                className="input input-bordered w-full"
-                            />
-                            {errors.name && (
-                                <p className="text-red-500 text-sm">{errors.name.message}</p>
-                            )}
+            {
+                isOpen && (
+                    <dialog open className="modal">
+                        <div className="modal-box">
+                            <h3 className="font-bold text-lg mb-4">Update Profile</h3>
 
-                            {/* Phone */}
+                            <form
+                                onSubmit={handleSubmit(handleProfileUpdate)}
+                                className="space-y-3"
+                            >
+                                {/* Name */}
+                                <label className="font-semibold">Name</label>
+                                <input
+                                    defaultValue={user.displayName}
+                                    {...register("name", { required: "Name is required" })}
+                                    placeholder="Full Name"
+                                    className="input input-bordered w-full"
+                                />
+                                {errors.name && (
+                                    <p className="text-red-500 text-sm">{errors.name.message}</p>
+                                )}
 
-                            <label className="font-semibold">Phone</label>
-                            <input
-                                defaultValue={userData?.phone}
-                                {...register("phone")}
-                                placeholder="Phone Number"
-                                className="input input-bordered w-full"
-                            />
+                                {/* Phone */}
 
-                            {/* Photo */}
-                            <label className="font-semibold">Photo</label>
-                            <input
-                                {...register("photo")}
-                                type="file"
-                                accept="image/*"
-                                className="file-input file-input-bordered w-full"
-                            />
+                                <label className="font-semibold">Phone</label>
+                                <input
+                                    defaultValue={userData?.phone}
+                                    {...register("phone")}
+                                    placeholder="Phone Number"
+                                    className="input input-bordered w-full"
+                                />
 
-                            {/* Actions */}
-                            <div className="modal-action">
-                                <button type="submit" className="btn btn-primary">
-                                    Update
-                                </button>
+                                {/* Photo */}
+                                <label className="font-semibold">Photo</label>
+                                <input
+                                    {...register("photo")}
+                                    type="file"
+                                    accept="image/*"
+                                    className="file-input file-input-bordered w-full"
+                                />
 
-                                <button
-                                    type="button"
-                                    className="btn"
-                                    onClick={() => {
-                                        reset();
-                                        setIsOpen(false);
-                                    }}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </dialog>
-            )}
+                                {/* Actions */}
+                                <div className="modal-action">
+                                    <button type="submit" className="btn btn-primary">
+                                        Update
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="btn"
+                                        onClick={() => {
+                                            reset();
+                                            setIsOpen(false);
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </dialog>
+                )}
 
         </div >
     );

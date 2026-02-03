@@ -67,7 +67,7 @@ const AllIssues = () => {
     return (
 
         <div>
-            
+
             <h2 className="text-xl md:text-3xl lg:text-4xl my-4">
                 All Issues Reported By Citizen: {total}
             </h2>
@@ -84,18 +84,20 @@ const AllIssues = () => {
 
             />
 
-            {/* Cards */}
+            {/* All issues Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                {issues.map(issue => (
-                    <IssueCard
-                        key={issue._id}
-                        issue={issue}
-                        user={user}
-                        refetch={refetch}
+               
+                {
+                    issues.map(issue => (
+                        <IssueCard
+                            key={issue._id}
+                            issue={issue}
+                            user={user}
+                            refetch={refetch}
 
-                        axiosSecure={axiosSecure}
-                    />
-                ))}
+                            axiosSecure={axiosSecure}
+                        />
+                    ))}
             </div>
 
             {/* No data */}
