@@ -3,6 +3,7 @@ import { FcGoogle } from 'react-icons/fc';
 import UseAuth from '../../hooks/UseAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useLocation, useNavigate } from 'react-router';
+import Swal from 'sweetalert2';
 
 const SocialLogin = () => {
 
@@ -18,34 +19,67 @@ const SocialLogin = () => {
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
-
-        // console.log("Handle google login clicked");
-
         signInWithGoogle()
-            .then(result => {
-                // console.log(result.user);
+            .then(async (result) => {
 
+                const user = result.user;
+                // console.log(user);
 
-                // create user in the database
                 const userInfo = {
-                    email: result.user.email,
-                    displayName: result.user.displayName,
-                    photoURL: result.user.photoURL
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    provider: user.providerData[0]?.providerId || 'google',
+                };
+
+                try {
+
+                    const res = await axiosSecure.post('/users', userInfo);
+
+                    if (res.data?.message === 'user exists') {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Welcome back!',
+                            text: 'You already have an account. Logged in successfully.',
+                            timer: 1800,
+                            showConfirmButton: false
+                        });
+
+
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Login Successful',
+                            text: 'Account created successfully.',
+                            timer: 1800,
+                            showConfirmButton: false
+                        });
+                    }
+
+                    navigate(location.state || '/', { replace: true });
+
+                } catch (error) {
+                    console.error(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Something went wrong',
+                        text: 'Please try again later.',
+                    });
                 }
-
-                axiosSecure.post('/users', userInfo)
-                    .then(res => {
-                        console.log('user data has been stored', res.data)
-
-                    })
-
-                navigate(location.state || '/');
 
             })
             .catch(error => {
-                console.log(error)
-            })
-    }
+                console.error('Google sign-in failed:', error);
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Google Login Failed',
+                    text: error.message,
+                });
+            });
+    };
+
 
 
     return (

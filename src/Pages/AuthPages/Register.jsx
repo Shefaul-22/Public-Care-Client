@@ -21,7 +21,7 @@ const Register = () => {
     const axiosSecure = useAxiosSecure();
 
     const location = useLocation();
-    console.log("In register page ", location);
+    // console.log("In register page ", location);
 
     const handleRegister = (data) => {
 
@@ -46,6 +46,7 @@ const Register = () => {
 
                         // create user in the database
                         const userInfo = {
+                            uid: result.user.uid,
                             email: data.email,
                             displayName: data.name,
                             photoURL: photoURL
@@ -78,7 +79,7 @@ const Register = () => {
 
                                 Swal.fire({
                                     title: "Success",
-                                    text: "Registration Successful!",
+                                    text: "Registration Successful! Please Login .",
                                     icon: "success",
                                     timer: 2000,
                                     showConfirmButton: false

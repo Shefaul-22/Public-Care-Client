@@ -18,7 +18,7 @@ const Login = () => {
     const { signInUser } = UseAuth();
 
     const location = useLocation();
-    console.log('in the login', location)
+    // console.log('in the login', location)
 
 
 
@@ -27,7 +27,11 @@ const Login = () => {
 
         signInUser(data.email, data.password)
             .then(result => {
-                console.log(result.user);
+
+                result.user &&
+
+                // console.log(result.user);
+
                 Swal.fire({
                     title: "Success",
                     text: "Login Successful!",
