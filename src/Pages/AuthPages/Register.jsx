@@ -120,12 +120,13 @@ const Register = () => {
                 <h2 className='font-extrabold text-2xl md:text-4xl'>Create an Account</h2>
                 <p>Register with CivicCare</p>
             </div>
+
             <form onSubmit={handleSubmit(handleRegister)}>
                 <fieldset className="fieldset">
 
                     {/* Name */}
                     <label className="label font-medium text-gray-700  text-[14px]">Name</label>
-                    <input type="text" className="input w-full md:w-2/3"
+                    <input type="text" className="input input-primary w-full md:w-2/3"
                         {...register('name', { required: true })}
                         placeholder="Your name" />
 
@@ -142,7 +143,7 @@ const Register = () => {
                     accept='image/*'
 
                     {...register('photo')}
-                    className="file-input w-full md:w-2/3"
+                    className="file-input input-primary w-full md:w-2/3"
                     placeholder="Your Photo" />
 
                     {errors.name?.type === "required" && (
@@ -151,7 +152,7 @@ const Register = () => {
 
                     {/* email */}
                     <label className="label font-medium text-gray-700 text-[14px]">Email</label>
-                    <input type="email" className="input w-full md:w-2/3"
+                    <input type="email" className="input input-primary w-full md:w-2/3"
                         {...register('email', { required: true })}
                         placeholder="example@email.com" />
 
@@ -165,7 +166,7 @@ const Register = () => {
                     <div className="relative w-full md:w-2/3">
                         <input
                             type={showPassword ? "text" : "password"}
-                            className="input w-full pr-10"
+                            className="input w-full input-primary  pr-10"
                             placeholder="Password"
                             {...register('password', {
                                 required: true,

@@ -30,6 +30,15 @@ const AddStaff = () => {
     const handleAddStaff = async (data) => {
 
         try {
+
+            Swal.fire({
+                title: "Please Wait",
+                text: "Staff account is being created...",
+                icon: "info",
+                showConfirmButton: false, 
+                allowOutsideClick: false  
+            });
+            
             const profileImg = data.photo[0];
 
 
@@ -50,6 +59,8 @@ const AddStaff = () => {
 
             // Send data to db
             const res = await axiosSecure.post("/admin/staffs", staffInfo);
+
+
 
             if (res.data.success) {
 
@@ -92,7 +103,7 @@ const AddStaff = () => {
                     <div className="modal-box">
 
                         <h3 className="font-bold text-lg mb-4">Add New Staff</h3>
-                        
+
                         <form onSubmit={handleSubmit(handleAddStaff)} className="space-y-3">
 
                             <label className="font-semibold">Name</label>
@@ -113,7 +124,7 @@ const AddStaff = () => {
                                 type="email"
                                 placeholder="Email"
                                 defaultValue=""
-                                
+
                                 className="input input-bordered w-full"
                             />
 

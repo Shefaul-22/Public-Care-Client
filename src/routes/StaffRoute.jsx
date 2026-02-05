@@ -7,7 +7,7 @@ const StaffRoute = ({ children }) => {
 
     
   
-    const { role, roleLoading } = useRole()
+    const { role, roleLoading } = useRole();
 
     if ( roleLoading) {
         return <Loading></Loading>

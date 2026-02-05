@@ -189,7 +189,7 @@ const IssueDetails = () => {
 
           <p className="mb-2 text-xl"><strong>Category :</strong> {issue.category}</p>
 
-          <p className="mb-2 break-all text-xl">
+          <p className="mb-2 break-words text-xl">
             <strong>Description :</strong> {issue.issueDescription}
           </p>
 

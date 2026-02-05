@@ -19,12 +19,17 @@ const AssignStaffModal = ({ issue, close }) => {
     }
   });
 
+  console.log(staffs);
+
   const handleAssign = async () => {
+
     const staff = staffs.find(s => s._id === staffId);
+    
 
     await axiosSecure.patch(`/admin/issues/${issue._id}/assign`, {
+
       staffId: staff._id,
-      name: staff.name,
+      name: staff.displayName,
       email: staff.email,
       
     });

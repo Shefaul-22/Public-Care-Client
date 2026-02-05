@@ -30,15 +30,15 @@ const Login = () => {
 
                 result.user &&
 
-                // console.log(result.user);
+                    // console.log(result.user);
 
-                Swal.fire({
-                    title: "Success",
-                    text: "Login Successful!",
-                    icon: "success",
-                    timer: 2000,
-                    showConfirmButton: false
-                });
+                    Swal.fire({
+                        title: "Success",
+                        text: "Login Successful!",
+                        icon: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
 
                 navigate(location?.state || '/');
             })
@@ -60,7 +60,9 @@ const Login = () => {
     return (
         <div >
 
+
             <Logo></Logo>
+
 
             <div className='space-y-2 my-5 md:7'>
                 <h2 className='font-extrabold text-2xl md:text-4xl'>Welcome Back</h2>
@@ -72,7 +74,7 @@ const Login = () => {
 
                     {/* email */}
                     <label className="label font-medium text-gray-700 text-[14px]">Email</label>
-                    <input type="email" className="input w-full md:w-2/3"
+                    <input type="email" className="input w-full input-primary md:w-2/3"
                         {...register('email', { required: true })}
                         placeholder="example@email.com" />
 
@@ -86,7 +88,7 @@ const Login = () => {
                     <div className="relative w-full md:w-2/3">
                         <input
                             type={showPassword ? "text" : "password"}
-                            className="input w-full pr-10"
+                            className="input input-primary w-full pr-10"
                             placeholder="Password"
                             {...register('password', {
                                 required: true,
