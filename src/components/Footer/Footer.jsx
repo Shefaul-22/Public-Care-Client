@@ -71,6 +71,7 @@ const Footer = () => {
 
                 
                 <div className="border-t border-gray-700 mt-10 pt-6 text-center text-sm flex justify-center items-center gap-1">
+                    
                     <span>{new Date().getFullYear()}</span>
                     <FaRegCopyright />
                     <span>CivicCare — All Rights Reserved.</span>

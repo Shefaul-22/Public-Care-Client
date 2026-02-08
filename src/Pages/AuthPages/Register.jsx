@@ -25,6 +25,14 @@ const Register = () => {
 
     const handleRegister = (data) => {
 
+        Swal.fire({
+            title: "Please Wait",
+            text: "Account is creating...",
+            icon: "info",
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+
         // console.log("after register", data);
         // console.log("after register", data, data.photo[0]);
         const profileImg = data.photo[0];
@@ -42,7 +50,7 @@ const Register = () => {
                     .then(res => {
 
                         const photoURL = res.data.data.url;
-                        console.log(photoURL);
+                        // console.log(photoURL);
 
                         // create user in the database
                         const userInfo = {
@@ -137,14 +145,14 @@ const Register = () => {
                     {/* Photo image field */}
                     <label className="label font-medium text-gray-700 text-[14px]">Upload an image</label>
 
-                    <input 
-                    
-                    type="file"
-                    accept='image/*'
+                    <input
 
-                    {...register('photo')}
-                    className="file-input input-primary w-full md:w-2/3"
-                    placeholder="Your Photo" />
+                        type="file"
+                        accept='image/*'
+
+                        {...register('photo')}
+                        className="file-input input-primary w-full md:w-2/3"
+                        placeholder="Your Photo" />
 
                     {errors.name?.type === "required" && (
                         <p className='text-red-500'>Photo is required</p>
