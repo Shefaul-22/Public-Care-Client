@@ -10,7 +10,7 @@ import IssueCard from "./IssueCard";
 
 const AllIssues = () => {
 
-    const { user } = UseAuth();
+    const { user, loading } = UseAuth();
     const axiosSecure = useAxiosSecure();
 
     const [filters, setFilters] = useState({
@@ -35,9 +35,17 @@ const AllIssues = () => {
     //     }
     // });
 
-    const { data = {}, isLoading, refetch, isFetching } = useQuery({
+    const { data = {},isLoading, refetch, isFetching } = useQuery({
 
-        queryKey: ["allIssues", filters, page],
+        queryKey: [
+            "allIssues",
+            filters.search,
+            filters.status,
+            filters.category,
+            filters.priority,
+            page
+        ],
+
         queryFn: async () => {
             const res = await axiosSecure.get("/issues", {
                 params: {
@@ -47,6 +55,7 @@ const AllIssues = () => {
                 }
             });
             return res.data;
+
         },
         keepPreviousData: true
     });
@@ -74,7 +83,7 @@ const AllIssues = () => {
 
     } = data
 
-    if (isLoading) return <Loading />;
+    if (loading || isLoading) return <Loading />;
 
     return (
 
@@ -94,7 +103,7 @@ const AllIssues = () => {
             />
 
             {
-                isFetching && !isLoading && (
+                isFetching && (
                     <div className="mt-4">
                         <Loading />
                     </div>
