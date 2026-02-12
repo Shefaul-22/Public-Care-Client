@@ -1,11 +1,11 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import UseAuth from "../../../hooks/UseAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 
 import IssueCard from "./IssueCard";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/Loading/Loading";
-import UseAuth from "../../../hooks/UseAuth";
 
 
 const LatestResolvedIssues = () => {

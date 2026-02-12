@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import UseAuth from "../../hooks/UseAuth";
@@ -22,7 +22,7 @@ const AllIssues = () => {
 
     // pagination
     const [page, setPage] = useState(1);
-    const limit = 9;
+
 
     // const { data: issues = [], isLoading, refetch } = useQuery({
 
@@ -35,7 +35,7 @@ const AllIssues = () => {
     //     }
     // });
 
-    const { data = {}, isLoading, refetch } = useQuery({
+    const { data = {}, isLoading, refetch, isFetching } = useQuery({
 
         queryKey: ["allIssues", filters, page],
         queryFn: async () => {
@@ -43,7 +43,7 @@ const AllIssues = () => {
                 params: {
                     ...filters,
                     page,
-                    limit
+
                 }
             });
             return res.data;
@@ -52,6 +52,18 @@ const AllIssues = () => {
     });
 
     // console.log(issues);
+
+    const handleSetFilters = useCallback((update) => {
+        setFilters(prev => {
+            const newFilters =
+                typeof update === "function" ? update(prev) : update;
+
+            return newFilters;
+        });
+
+        setPage(1);
+    }, []);
+
 
     const {
         issues = [],
@@ -77,16 +89,21 @@ const AllIssues = () => {
 
                 filters={filters}
                 // setFilters={setFilters}
-                setFilters={(newFilters) => {
-                    setFilters(newFilters);
-                    setPage(1);
-                }}
+                setFilters={handleSetFilters}
 
             />
 
+            {
+                isFetching && !isLoading && (
+                    <div className="mt-4">
+                        <Loading />
+                    </div>
+                )
+            }
+
             {/* All issues Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-               
+
                 {
                     issues.map(issue => (
                         <IssueCard

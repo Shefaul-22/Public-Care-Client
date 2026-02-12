@@ -18,6 +18,7 @@ const ReportIssue = () => {
         control,
         formState: { errors }
     } = useForm();
+    
     const { user } = UseAuth();
 
     const email = user.email;
