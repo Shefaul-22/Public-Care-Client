@@ -38,24 +38,39 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                Component: HomePage
+                Component: HomePage,
+                handle: {
+                    title: "Home"
+                }
             },
             {
                 path: "allIssues",
-                Component: AllIssues
+                Component: AllIssues,
+                handle: {
+                    title: "All Issues"
+                }
             },
             {
                 path: "services",
-                Component: Services
+                Component: Services,
+                handle: {
+                    title: "Services"
+                }
             },
             {
                 path: "aboutUs",
-                Component: AboutUs
+                Component: AboutUs,
+                handle: {
+                    title: "About Us"
+                }
             },
 
             {
                 path: "service-centers",
                 Component: ServiceCenters,
+                handle: {
+                    title: "Service Centers"
+                },
                 loader: () => fetch('/serviceCenter.json').then(res => res.json())
 
             },
@@ -63,6 +78,10 @@ export const router = createBrowserRouter([
             {
                 path: "post-issue",
                 element: <PrivateRoute><ReportIssue></ReportIssue></PrivateRoute>,
+
+                handle: {
+                    title: "Report an Issue"
+                },
                 loader: () => fetch('/serviceCenter.json').then(res => res.json())
             },
 
@@ -75,7 +94,10 @@ export const router = createBrowserRouter([
 
             {
                 path: "issues/:id",
-                element: <IssueDetails></IssueDetails>
+                element: <IssueDetails></IssueDetails>,
+                handle: {
+                    title: "Issue Details"
+                }
             }
 
 
@@ -90,12 +112,19 @@ export const router = createBrowserRouter([
 
             {
                 path: "register",
-                Component: Register
+                Component: Register,
+                handle: {
+                    title: "Register"
+                }
             },
 
             {
                 path: "login",
-                Component: Login
+                Component: Login,
+
+                handle: {
+                    title: "Login"
+                }
             }
         ]
 
@@ -110,18 +139,27 @@ export const router = createBrowserRouter([
 
             {
                 index: true,
-                Component: DashboardHome
+                Component: DashboardHome,
+                handle: {
+                    title: "Dashboard Home"
+                }
 
             },
             {
                 path: "my-issues",
-                element: <PrivateRoute><MyIssues></MyIssues></PrivateRoute>
+                element: <PrivateRoute><MyIssues></MyIssues></PrivateRoute>,
+                handle: {
+                    title: "My Issues"
+                }
             },
 
             {
 
                 path: "profile",
-                element: <PrivateRoute><ProfilePage></ProfilePage></PrivateRoute>
+                element: <PrivateRoute><ProfilePage></ProfilePage></PrivateRoute>,
+                handle: {
+                    title: "Your Profile"
+                }
 
             },
 
@@ -133,35 +171,47 @@ export const router = createBrowserRouter([
             // admin related route
             {
                 path: "addStaff",
-                element: <PrivateRoute><AdminRoute><AddStaff></AddStaff></AdminRoute></PrivateRoute>
+                element: <PrivateRoute><AdminRoute><AddStaff></AddStaff></AdminRoute></PrivateRoute>,
+                handle: {
+                    title: "Add a Staff"
+                }
             },
 
             {
                 path: "admin-all-issues",
-                element: <PrivateRoute><AdminRoute><AdminAllIssues></AdminAllIssues></AdminRoute></PrivateRoute>
+                element: <PrivateRoute><AdminRoute><AdminAllIssues></AdminAllIssues></AdminRoute></PrivateRoute>,
+                handle: {
+                    title: "Admin all Issues"
+                }
             },
 
             {
                 path: "manage-users",
-                element: <PrivateRoute><AdminRoute><ManageUsers></ManageUsers></AdminRoute></PrivateRoute>
+                element: <PrivateRoute><AdminRoute><ManageUsers></ManageUsers></AdminRoute></PrivateRoute>,
+
+                handle: {
+                    title: "Manage Users"
+                }
             },
 
             {
                 path: "allPayments-history",
-                element: <PrivateRoute><AllPaymentsHistory></AllPaymentsHistory></PrivateRoute>
+                element: <PrivateRoute><AllPaymentsHistory></AllPaymentsHistory></PrivateRoute>,
+                handle: {
+                    title: "Payment History"
+                }
             },
 
             // Staff related routes
 
             {
                 path: "staff-assigned-issues",
-                element: <PrivateRoute><StaffRoute><AssignedIssues></AssignedIssues></StaffRoute></PrivateRoute>
+                element: <PrivateRoute><StaffRoute><AssignedIssues></AssignedIssues></StaffRoute></PrivateRoute>,
+
+                handle: {
+                    title: "Assigned Issues"
+                }
             },
-
-
-
-
-
 
 
 
@@ -170,6 +220,10 @@ export const router = createBrowserRouter([
 
     {
         path: "*",
-        element: <ErrorPage></ErrorPage>
+        element: <ErrorPage></ErrorPage>,
+        handle: {
+            title: "Error Page"
+        }
+
     }
 ])

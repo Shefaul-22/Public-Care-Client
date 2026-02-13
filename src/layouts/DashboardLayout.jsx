@@ -1,5 +1,5 @@
-import React from 'react';
-import { NavLink, Outlet } from 'react-router';
+import React, { useEffect } from 'react';
+import { NavLink, Outlet, useMatches } from 'react-router';
 
 import { FaRegCreditCard, FaUser } from 'react-icons/fa';
 import { MdReportProblem } from 'react-icons/md';
@@ -20,6 +20,21 @@ const DashboardLayout = () => {
     const closeDrawer = () => {
         document.getElementById("my-drawer-4").checked = false;
     };
+
+    const matches = useMatches();
+
+    useEffect(() => {
+        const currentRoute = matches.find(
+            (match) => match.handle?.title
+        );
+
+        if (currentRoute) {
+            document.title = `${currentRoute.handle.title} | Civic Care`;
+        } else {
+            document.title = "Civic Care";
+        }
+
+    }, [matches]);
 
 
 
