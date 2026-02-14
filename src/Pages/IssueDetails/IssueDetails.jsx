@@ -37,7 +37,7 @@ const IssueDetails = () => {
     axiosSecure.get(`/issues/${id}`)
       .then(res => setIssue(res.data))
       .catch(err => console.error(err));
-  }, [id]);
+  }, [id,axiosSecure]);
 
   // useEffect(() => {
   //   const params = new URLSearchParams(window.location.search);
@@ -62,7 +62,7 @@ const IssueDetails = () => {
     } else if (params.get('payment') === 'cancelled') {
       Swal.fire('Payment Cancelled', 'You did not complete the payment.', 'info');
     }
-  }, [id]);
+  }, [id,axiosSecure]);
 
 
 
@@ -82,7 +82,7 @@ const IssueDetails = () => {
   })
 
   if (!issue || loading) return <Loading></Loading>
-  console.log(issue);
+  // console.log(issue);
 
 
   // console.log(user?.email, issue);
