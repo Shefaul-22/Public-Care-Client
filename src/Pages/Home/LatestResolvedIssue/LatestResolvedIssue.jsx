@@ -1,16 +1,19 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import UseAuth from "../../../hooks/UseAuth";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+// import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 
 import IssueCard from "./IssueCard";
 import Loading from "../../../components/Loading/Loading";
+import UseAxios from "../../../hooks/UseAxios";
 
 
 const LatestResolvedIssues = () => {
 
-    const axiosSecure = useAxiosSecure();
+    // const axiosSecure = useAxiosSecure();
+
+    const axios = UseAxios();
 
     const {user} = UseAuth();
     
@@ -19,7 +22,7 @@ const LatestResolvedIssues = () => {
 
         queryKey: ["latest-resolved-issues"],
         queryFn: async () => {
-            const res = await axiosSecure.get("/issues/resolved/latest");
+            const res = await axios.get("/issues/resolved/latest");
             return res.data;
         }
     });

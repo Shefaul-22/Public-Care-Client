@@ -7,11 +7,13 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loading from "../../components/Loading/Loading";
 import AllIssuesFilters from "./AllIssuesFilters";
 import IssueCard from "./IssueCard";
+import UseAxios from "../../hooks/UseAxios";
 
 const AllIssues = () => {
 
     const { user, loading } = UseAuth();
     const axiosSecure = useAxiosSecure();
+    const axios = UseAxios();
 
     const [filters, setFilters] = useState({
         search: "",
@@ -47,7 +49,7 @@ const AllIssues = () => {
         ],
 
         queryFn: async () => {
-            const res = await axiosSecure.get("/issues", {
+            const res = await axios.get("/issues", {
                 params: {
                     ...filters,
                     page,
