@@ -98,7 +98,7 @@ const MyIssues = () => {
                 <table className="table table-zebra w-full table-fixed">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th className="w-1">SL</th>
                             <th>Title</th>
                             <th>Status</th>
                             <th>Category</th>

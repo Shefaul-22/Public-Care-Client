@@ -47,6 +47,7 @@ const IssueDetails = () => {
   // }, []);
 
   useEffect(() => {
+    
     const params = new URLSearchParams(window.location.search);
     const sessionId = params.get('session_id');
 
@@ -318,6 +319,7 @@ const IssueDetails = () => {
       </Timeline>
 
     </div>
+
   );
 };
 
