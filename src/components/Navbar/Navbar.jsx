@@ -16,16 +16,21 @@ const Navbar = () => {
 
     const axiosSecure = useAxiosSecure();
 
-    const { data: userData = [],
+    const { data: userData = {},
         // refetch
 
     } = useQuery({
-        queryKey: ['user'],
+        queryKey: ['user', user?.email],
+        enabled: !!user?.email,
+
         queryFn: async () => {
-            const res = await axiosSecure.get(`/users?email=${user.email}`);
+            const res = await axiosSecure.get(`/users?email=${encodeURIComponent(user.email)}`);
             return res.data;
         }
     })
+
+    // console.log(userData.role);
+
 
     const handleSignOut = () => {
         logOutUser()
@@ -38,7 +43,7 @@ const Navbar = () => {
                 });
             })
             .catch(error => {
-                console.log(error);
+                // console.log(error);
 
                 Swal.fire({
                     title: "Error!",
