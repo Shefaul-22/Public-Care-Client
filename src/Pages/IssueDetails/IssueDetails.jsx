@@ -36,7 +36,7 @@ const IssueDetails = () => {
   useEffect(() => {
     axiosSecure.get(`/issues/${id}`)
       .then(res => setIssue(res.data))
-      .catch(err => console.error(err));
+      // .catch(err => console.error(err));
   }, [id,axiosSecure]);
 
   // useEffect(() => {
@@ -59,7 +59,7 @@ const IssueDetails = () => {
             Swal.fire('Success', 'Issue priority updated!', 'success');
           }
         })
-        .catch(err => console.error(err));
+        // .catch(err => console.error(err));
     } else if (params.get('payment') === 'cancelled') {
       Swal.fire('Payment Cancelled', 'You did not complete the payment.', 'info');
     }
@@ -134,7 +134,7 @@ const IssueDetails = () => {
 
   const handleBoost = async (issue) => {
 
-    console.log(issue);
+    // console.log(issue);
 
 
     const confirm = await Swal.fire({
@@ -161,7 +161,7 @@ const IssueDetails = () => {
 
     } catch (error) {
 
-      console.error("Boost payment error:", error);
+      // console.error("Boost payment error:", error);
 
       // Swal.fire("Error", "Failed to initiate payment.", "error");
       if (!handleBlockedError(error)) {
