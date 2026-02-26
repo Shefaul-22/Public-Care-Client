@@ -31,10 +31,10 @@ const features = [
 const Features = () => {
 
     return (
-        <div className="py-8">
-            <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900">Features</h2>
-                <p className="mt-2 text-gray-600  ">
+        <div className="">
+            <div className="text-center mb-12 ">
+                <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900">Feat<span className='text-[#fa0bd2]'>ures</span></h2>
+                <p className="mt-2 text-gray-800  ">
                     Explore the key features of CivicCare that make reporting and resolving public issues easier and faster.
                 </p>
             </div>

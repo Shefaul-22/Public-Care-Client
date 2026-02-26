@@ -68,7 +68,7 @@ const ServiceCenters = () => {
     );
 
     return (
-        <div>
+        <div className="max-w-7xl mx-auto">
             <h2 className="text-center font-bold my-4 md:my-7 lg:my-10 text-2xl md:text-4xl">
                 We are available in 64 districts
             </h2>

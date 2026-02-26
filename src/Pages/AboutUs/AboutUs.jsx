@@ -5,7 +5,7 @@ const AboutUs = () => {
 
     return (
 
-        <div className="bg-gray-50 py-10">
+        <div className="bg-gray-50 py-10 max-w-7xl mx-auto">
             <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
 
                 {/* Image */}

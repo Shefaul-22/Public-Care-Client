@@ -4,7 +4,7 @@ const Services = () => {
 
     return (
 
-        <div className='space-y-5 md:space-y-10'>
+        <div className='space-y-5 md:space-y-10 max-w-7xl mx-auto'>
 
             <h2 className="text-3xl md:text-5xl font-bold text-center mt-4 md:mt-8">
                 Civic Services We Offer

@@ -89,10 +89,10 @@ const AllIssues = () => {
 
     return (
 
-        <div>
+        <div className="max-w-7xl mx-auto ">
 
             <h2 className="text-xl md:text-3xl lg:text-4xl my-4">
-                All Issues Reported By Citizen: {total}
+                All Issues <span className="text-[#fa0bd2]">Reported By Citizen</span>: {total}
             </h2>
 
             {/* Filters */}

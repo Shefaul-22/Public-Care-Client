@@ -4,8 +4,8 @@ import React from 'react';
 const HowItWorks = () => {
     return (
         <div className="p-3 text-slate-800">
-            <h2 className="my-6 font-extrabold text-2xl md:text-4xl lg:text-4xl text-center text-slate-900">
-                How CivicCare Works
+            <h2 className="my-6 font-extrabold text-2xl md:text-5xl  text-center text-slate-900">
+                How Civic<span className='text-[#fa0bd2]'>Care Works</span>
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

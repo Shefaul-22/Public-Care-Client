@@ -21,11 +21,11 @@ const RootLayout = () => {
     }, [matches]);
 
     return (
-        <div className='bg-gradient-to-r from-blue-100 to-indigo-100'>
+        <div className='bg-teal-100'>
             <div>
                 <Navbar></Navbar>
             </div>
-            <div className=' pt-16 md:pt-16 bg-gradient-to-r from-blue-100 to-indigo-100'>
+            <div className=' pt-16 md:pt-16 bg-teal-100'>
                 <Outlet></Outlet>
             </div>
 

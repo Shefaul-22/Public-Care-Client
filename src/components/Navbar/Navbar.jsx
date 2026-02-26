@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { BiSolidHomeCircle, BiStar } from 'react-icons/bi';
 import useRole from '../../hooks/useRole';
-import { MdContactPhone, MdReportProblem, MdSyncProblem } from 'react-icons/md';
+import { MdContactPhone, MdOutlineLogin, MdReportProblem, MdSyncProblem } from 'react-icons/md';
 import { FcServices } from 'react-icons/fc';
 import { HiInformationCircle } from 'react-icons/hi';
 
@@ -190,8 +190,8 @@ const Navbar = () => {
                             </ul>
                         </div>
                     ) : (
-                        <Link to="/login" className="btn bg-[#77EA7E]">
-                            Login
+                        <Link to="/login" className="btn text-white bg-primary flex items-center">
+                            <MdOutlineLogin size={20}/><span>Login</span>
                         </Link>
                     )}
 

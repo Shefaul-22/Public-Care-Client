@@ -165,7 +165,7 @@ const ReportIssue = () => {
     };
 
     return (
-        <div>
+        <div className="max-w-7xl mx-auto">
             <h2 className="text-5xl font-bold pt-4 md:pt-6">Report An Issue</h2>
             <form onSubmit={handleSubmit(handleReportIssue)} className='mt-2 md:mt-4 p-2 text-black'>
 

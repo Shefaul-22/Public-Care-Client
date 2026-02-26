@@ -28,13 +28,13 @@ const Reviews = () => {
 
     return (
 
-        <div className='pt-8'>
+        <div className=''>
 
-            <div className='text-center my-7 space-y-4'>
-                <h2 className='font-bold text-xl md:text-3xl lg:text-4xl'>
-                    What our citizens are saying
+            <div className='text-center my-7 space-y-4 '>
+                <h2 className='font-bold text-xl md:text-5xl '>
+                    What our citi<span className='text-[#fa0bd2]'>zens are saying</span>
                 </h2>
-                <p className='px-6 md:px-16 lg:px-32 text-gray-600'>
+                <p className='px-6 md:px-16 lg:px-32 text-gray-800 mb-4 md:mb-6'>
                     Real feedback from citizens using CivicCare to report and track public issues.
                     Hear how our platform has helped improve transparency, speed up responses, and make city services more efficient.
                 </p>

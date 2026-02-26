@@ -55,7 +55,7 @@ const IssueCard = ({ issue, user, refetch, axiosSecure }) => {
 
         <div className="card bg-base-200 shadow-lg ">
 
-            <div className="p-2 relative">
+            <div className=" relative">
                 <img
                     src={issue.photoURL}
                     alt={issue.title}
