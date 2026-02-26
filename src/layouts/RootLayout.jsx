@@ -25,7 +25,7 @@ const RootLayout = () => {
             <div>
                 <Navbar></Navbar>
             </div>
-            <div className='max-w-7xl mx-auto pt-16 md:pt-16 bg-gradient-to-r from-blue-100 to-indigo-100'>
+            <div className=' pt-16 md:pt-16 bg-gradient-to-r from-blue-100 to-indigo-100'>
                 <Outlet></Outlet>
             </div>
 

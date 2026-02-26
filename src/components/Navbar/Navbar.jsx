@@ -4,8 +4,11 @@ import UseAuth from '../../hooks/UseAuth';
 import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-import { BiStar } from 'react-icons/bi';
+import { BiSolidHomeCircle, BiStar } from 'react-icons/bi';
 import useRole from '../../hooks/useRole';
+import { MdContactPhone, MdReportProblem, MdSyncProblem } from 'react-icons/md';
+import { FcServices } from 'react-icons/fc';
+import { HiInformationCircle } from 'react-icons/hi';
 
 const Navbar = () => {
 
@@ -57,48 +60,48 @@ const Navbar = () => {
     const links = <>
 
         <NavLink to="/" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
+            `mr-5  font-semibold flex  ${isActive ? "text-blue-700 border-b-2 border-blue-600 "
                 : "text-gray-800 hover:text-blue-600"
             }`
 
-        }>Home</NavLink>
+        }><BiSolidHomeCircle size={20} /><span className='pl-1'>Home</span></NavLink>
 
         <NavLink to="/allIssues" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
+            `mr-5 pb-1 font-semibold flex ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
 
-        }>All Issues</NavLink>
+        }><MdSyncProblem size={20} /><span className='pl-1'>All Issues</span></NavLink>
 
         <NavLink to="/services" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
+            `mr-5 pb-1 font-semibold flex ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
 
-        }>Services</NavLink>
+        }><FcServices size={20} /><span className='pl-1'>Services</span></NavLink>
 
 
         <NavLink to="/aboutUs" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
+            `mr-5 pb-1 font-semibold flex ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
 
-        }>About Us</NavLink>
+        }><HiInformationCircle size={20} /><span className='pl-1'>About Us</span></NavLink>
 
         <NavLink to="/service-centers" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
+            `mr-5 pb-1 font-semibold flex ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
 
-        }>Service Centers</NavLink>
+        }><MdContactPhone size={20}/><span className='pl-1'>Contact</span></NavLink>
 
         {
             (role === "user" || role === "premiumUser") && <NavLink to="/post-issue" className={({ isActive }) =>
-                `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
+                `mr-5 pb-1 font-semibold flex ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                     : "text-gray-800 hover:text-blue-600"
                 }`
 
-            }>Report An Issue</NavLink>
+            }><MdReportProblem size={20} /><span className='pl-1'>Report An Issue</span></NavLink>
         }
 
 
@@ -108,7 +111,7 @@ const Navbar = () => {
 
     return (
         <div>
-            <div className="navbar fixed top-0 z-50 bg-gradient-to-r from-blue-100 to-indigo-100 shadow-sm">
+            <div className="navbar fixed top-0 z-50 bg-gradient-to-r from-blue-200 to-indigo-100 shadow-sm">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -116,7 +119,7 @@ const Navbar = () => {
                         </div>
                         <ul
                             tabIndex="-1"
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow flex gap-2">
 
                             {links}
 

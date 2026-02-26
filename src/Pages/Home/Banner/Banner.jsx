@@ -50,9 +50,11 @@ const Banner = () => {
             interval={2000}
             showThumbs={false}
             showStatus={false}
+
+             
         >
             {slides.map((slide, index) => (
-                <div key={index} className="relative h-[60vh]">
+                <div key={index} className="relative w-full h-[60vh]">
                     <img
                         src={slide.img}
                         alt={slide.title}

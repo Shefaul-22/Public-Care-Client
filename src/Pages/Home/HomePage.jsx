@@ -9,7 +9,7 @@ const HomePage = () => {
     return (
         <div >
             <Banner></Banner>
-            <div className='space-y-4'>
+            <div className='space-y-4 max-w-7xl mx-auto'>
                 <LatestResolvedIssues></LatestResolvedIssues>
                 <Features></Features>
                 <HowItWorks></HowItWorks>
