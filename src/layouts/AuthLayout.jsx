@@ -21,7 +21,7 @@ const AuthLayout = () => {
 
 
     return (
-        <div className='bg-slate-200'>
+        <div className='bg-gradient-to-r from-blue-300 to-indigo-200'>
             <div className='w-11/12 mx-auto py-8'>
                 <Outlet></Outlet>
             </div>

@@ -7,13 +7,15 @@ import LatestResolvedIssues from './LatestResolvedIssue/LatestResolvedIssue';
 
 const HomePage = () => {
     return (
-        <div className='space-y-4'>
+        <div >
             <Banner></Banner>
-            <LatestResolvedIssues></LatestResolvedIssues>
-            <Features></Features>
-            <HowItWorks></HowItWorks>
-            <Reviews></Reviews>
-            
+            <div className='space-y-4'>
+                <LatestResolvedIssues></LatestResolvedIssues>
+                <Features></Features>
+                <HowItWorks></HowItWorks>
+                <Reviews></Reviews>
+
+            </div>
         </div>
     );
 };
