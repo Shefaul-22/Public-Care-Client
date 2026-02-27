@@ -1,34 +1,53 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import UseAuth from './UseAuth';
 import useAxiosSecure from './useAxiosSecure';
 
 const useRole = () => {
     const { user } = UseAuth();
     const axiosSecure = useAxiosSecure();
+    const queryClient = useQueryClient();
 
-    const { isLoading: roleLoading, data: role = 'user' } = useQuery({
+    const {
+        isLoading: roleLoading,
+        data: role = 'user',
+    } = useQuery({
         queryKey: ['user-role', user?.email],
-        enabled: !!user?.email, 
-        queryFn: async () => {
-            if (!user?.email) return 'user'; 
+        enabled: !!user?.email,
 
-            const encodedEmail = encodeURIComponent(user.email);
+        
+        staleTime: 5 * 60 * 1000,
+        cacheTime: 10 * 60 * 1000,
+
+        initialData: () => {
+            if (!user?.email) return undefined;
+            return localStorage.getItem('userRole') || undefined;
+        },
+
+        queryFn: async () => {
+            if (!user?.email) return 'user';
 
             try {
-
-                // updated API endpoint using query param
+                const encodedEmail = encodeURIComponent(user.email);
                 const res = await axiosSecure.get(`/users/role?email=${encodedEmail}`);
-                return res.data?.role || 'user';
+
+                const fetchedRole = res.data?.role || 'user';
+
+                localStorage.setItem('userRole', fetchedRole);
+                return fetchedRole;
+
             } catch (err) {
                 console.error('Failed to fetch role:', err);
-                return 'user'; 
+                return 'user';
             }
         }
     });
 
-    return { role, roleLoading };
+    const clearRole = () => {
+        localStorage.removeItem('userRole');
+        queryClient.removeQueries({ queryKey: ['user-role'] });
+    };
+
+    return { role, roleLoading, clearRole };
 };
 
 export default useRole;

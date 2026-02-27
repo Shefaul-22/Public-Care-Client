@@ -3,6 +3,8 @@ import { AuthContext } from './AuthContext';
 
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/firebase.init';
+import { useQueryClient } from '@tanstack/react-query';
+
 
 const provider = new GoogleAuthProvider();
 
@@ -25,10 +27,28 @@ const AuthProvider = ({ children }) => {
         return signInWithPopup(auth, provider)
     }
 
-    const logOutUser = () => {
+    // const logOutUser = () => {
+    //     setLoading(true);
+    //     return signOut(auth)
+    // }
+
+    const queryClient = useQueryClient();
+
+    const logOutUser = async () => {
         setLoading(true);
-        return signOut(auth)
-    }
+        try {
+            await signOut(auth);
+
+            queryClient.removeQueries({ queryKey: ['user-role'] });
+            localStorage.removeItem('userRole');
+            setUser(null);
+
+        } catch (err) {
+            console.error('Logout failed:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const UpdateUserProfile = (profile) => {
         return updateProfile(auth.currentUser, profile)
