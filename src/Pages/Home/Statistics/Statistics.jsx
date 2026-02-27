@@ -3,8 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import UseAxios from "../../../hooks/UseAxios";
 import Loading from "../../../components/Loading/Loading";
 
-
-
 const Statistics = () => {
 
     const axios = UseAxios();
@@ -12,42 +10,38 @@ const Statistics = () => {
     const { data, isLoading } = useQuery({
         queryKey: ["statistics"],
         queryFn: async () => {
-            const res = await axios.get("/issues", {
-                params: { limit: 1000 }
-            });
 
-            const issues = res.data.issues;
+            const res = await axios.get("/issues/statistics");
 
-            const total = issues.length;
-            const resolved = issues.filter(i => i.status === "resolved").length;
-            const pending = issues.filter(i => i.status === "pending").length;
-            const inProgress = issues.filter(i => i.status === "in-progress").length;
-
-            return { total, resolved, pending, inProgress };
+            return res.data;
         }
     });
 
-    if (isLoading) return <Loading />;
+    if (isLoading || !data) return <Loading />;
 
     const stats = [
-        { label: "Total Issues", value: data.total },
+        { label: "Total Issues", value: data.totalNum },
         { label: "Resolved", value: data.resolved },
+        { label: "Closed", value: data.closed },
         { label: "Pending", value: data.pending },
         { label: "In Progress", value: data.inProgress }
     ];
 
     return (
-        <section className="mt-16">
-            <h2 className="text-3xl font-bold text-center mb-8">
+        <div className="  rounded-2xl">
+
+            <h2 className="text-3xl md:text-5xl font-bold text-center mb-8">
                 Platform Statistics
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {/* responsive fix */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
 
                 {stats.map((stat, index) => (
+
                     <div
                         key={index}
-                        className="glass-card p-6 text-center"
+                        className="card bg-teal-100 p-6 text-center"
                     >
                         <h3 className="text-3xl font-bold text-primary">
                             {stat.value}
@@ -56,11 +50,14 @@ const Statistics = () => {
                         <p className="text-gray-500 mt-2">
                             {stat.label}
                         </p>
+
                     </div>
+
                 ))}
 
             </div>
-        </section>
+
+        </div>
     );
 };
 

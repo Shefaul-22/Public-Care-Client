@@ -10,7 +10,7 @@ import InvoicePDF from "../../../components/PaymentInvoice/InvoicePDF";
 
 const AllPaymentsHistory = () => {
 
-    const { role } = useRole();
+    const { role ,roleLoading} = useRole();
 
     const axiosSecure = useAxiosSecure();
 
@@ -51,7 +51,7 @@ const AllPaymentsHistory = () => {
         }));
     }, [payments]);
 
-    if (isLoading) return <Loading></Loading>;
+    if (isLoading || roleLoading) return <Loading></Loading>;
 
     return (
 

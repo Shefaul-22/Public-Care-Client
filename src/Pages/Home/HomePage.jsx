@@ -23,9 +23,9 @@ const HomePage = () => {
                 
                 <Reviews></Reviews>
 
+                <FAQ></FAQ>
                 <PricingCards></PricingCards>
 
-                <FAQ></FAQ>
 
                 <CallToAction></CallToAction>
 

@@ -5,12 +5,14 @@ import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import Loading from "../../../../components/Loading/Loading";
 import Swal from "sweetalert2";
 import AssignStaffModal from "./AssignStaffModal";
+import useRole from "../../../../hooks/useRole";
 
 
 const AdminAllIssues = () => {
 
     const axiosSecure = useAxiosSecure();
     const queryClient = useQueryClient();
+    const {roleLoading} = useRole();
 
     const [selectedIssue, setSelectedIssue] = useState(null);
 
@@ -40,7 +42,7 @@ const AdminAllIssues = () => {
         }
     };
 
-    if (isLoading) return <Loading></Loading>;
+    if (isLoading || roleLoading) return <Loading></Loading>;
 
     return (
         <div className="p-6">

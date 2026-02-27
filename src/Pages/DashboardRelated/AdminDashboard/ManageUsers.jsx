@@ -3,10 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/Loading/Loading";
 import Swal from "sweetalert2";
+import useRole from "../../../hooks/useRole";
 
 const ManageUsers = () => {
 
     const axiosSecure = useAxiosSecure();
+
+    const {roleLoading} = useRole();
 
     // Fetch all citizen users
     const { data: users = [], isLoading, refetch } = useQuery({
@@ -68,7 +71,7 @@ const ManageUsers = () => {
         });
     };
 
-    if (isLoading) return <Loading ></Loading>;
+    if (isLoading || roleLoading) return <Loading ></Loading>;
 
     return (
         <div className="overflow-x-auto mt-6">

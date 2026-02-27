@@ -3,9 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/Loading/Loading";
 import Swal from "sweetalert2";
+import useRole from "../../../hooks/useRole";
 
 const ManageStaffs = () => {
     const axiosSecure = useAxiosSecure();
+
+    const {roleLoading} = useRole();
 
     const [editStaff, setEditStaff] = useState(null);
 
@@ -72,7 +75,7 @@ const ManageStaffs = () => {
         }
     };
 
-    if (isLoading) return <Loading></Loading>
+    if (isLoading || roleLoading) return <Loading></Loading>
 
     return (
         <div className=" mt-6">

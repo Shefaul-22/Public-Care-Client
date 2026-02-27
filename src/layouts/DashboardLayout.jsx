@@ -5,17 +5,19 @@ import { FaRegCreditCard, FaUser } from 'react-icons/fa';
 import { MdReportProblem } from 'react-icons/md';
 import { LuUserCog } from "react-icons/lu";
 import { HiUserAdd } from "react-icons/hi";
+import { FiSettings, FiLogOut } from "react-icons/fi";
 
 import useRole from '../hooks/useRole';
-
-
-
+import UseAuth from '../hooks/UseAuth';
+import useTheme from '../hooks/useTheme';
+import Loading from '../components/Loading/Loading';
 
 const DashboardLayout = () => {
 
-    const { role } = useRole();
-
-    //    console.log(role);
+    const { role ,roleLoading} = useRole();
+    // console.log(role);
+    const { logOutUser } = UseAuth();
+    const { theme, toggleTheme } = useTheme();
 
     const closeDrawer = () => {
         document.getElementById("my-drawer-4").checked = false;
@@ -28,251 +30,243 @@ const DashboardLayout = () => {
             (match) => match.handle?.title
         );
 
-        if (currentRoute) {
-            document.title = `${currentRoute.handle.title} | Civic Care`;
-        } else {
-            document.title = "Civic Care";
-        }
+        document.title = currentRoute
+            ? `${currentRoute.handle.title} | Civic Care`
+            : "Civic Care";
 
     }, [matches]);
 
+    const handleLogout = async () => {
+        try {
+            await logOutUser();
+            closeDrawer();
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
+    // DaisyUI 
+    const navItemStyle = ({ isActive }) =>
+        `flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200
+        ${isActive
+            ? "bg-primary text-primary-content font-medium"
+            : "text-base-content hover:bg-base-200"
+        }`;
+
+        if(roleLoading) return <Loading></Loading>
 
     return (
 
-        <div className="drawer lg:drawer-open p-2 md:p-4 lg:p-6 w-full bg-slate-100">
+        <div className="drawer lg:drawer-open min-h-screen w-full bg-base-200">
 
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
-            <div className="drawer-content w-full">
-                {/* Navbar */}
-                <nav className="navbar  bg-base-300">
+            {/* ================= CONTENT ================= */}
+            <div className="drawer-content flex flex-col w-full">
 
-                    <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost  lg:hidden">
-                        {/* Sidebar toggle icon */}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-8"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></svg>
+                {/* ===== NAVBAR ===== */}
+                <nav className="navbar bg-base-100 border-b border-base-300 px-6 shadow-sm">
+
+                    <label
+                        htmlFor="my-drawer-4"
+                        className="btn btn-square btn-ghost lg:hidden"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            fill="none"
+                            stroke="currentColor"
+                            className="size-6"
+                        >
+                            <path d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
                     </label>
 
-                    <div className="px-4 text-xl md:text-2xl">CivicCare Dashboard</div>
+                    <div className="text-xl font-semibold capitalize text-base-content">
+                         Dashboard
+                    </div>
 
                 </nav>
 
-                {/* Page content here */}
-
-                <div className='w-full  px-2 md:px-4 py-3 flex flex-col items-stretch bg-slate-100'>
-                    <Outlet></Outlet>
+                {/* ===== PAGE CONTENT ===== */}
+                <div className="flex-1 px-6 py-6 text-base-content">
+                    <Outlet />
                 </div>
-
 
             </div>
 
-            <div className="drawer-side is-drawer-close:overflow-visible">
+            {/* ================= SIDEBAR ================= */}
+            <div className="drawer-side">
+                <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 
-                <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
+                <div className="flex min-h-full w-64 flex-col bg-base-100 border-r border-base-300 shadow-sm">
 
-                <div className="flex min-h-full flex-col items-center bg-base-200 is-drawer-close:w-14 is-drawer-open:w-56 md:is-drawer-open:w-64">
+                    {/* ===== SIDEBAR HEADER ===== */}
+                    <div className="flex items-center justify-between px-4 py-4 border-b border-base-300">
 
-                    {/* Sidebar content here */}
-                    <ul className="menu w-full grow pt-14 mr-3">
-                        {/* List item */}
-                        <li >
-                            <NavLink to="/" className={({ isActive }) =>
-                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                    : ""
-                                }`}
+                        <h2 className="text-lg font-bold text-primary">
+                            CivicCare
+                        </h2>
 
-                                onClick={closeDrawer}
+                        {/* DaisyUI Toggle */}
+                        <button
+                            onClick={toggleTheme}
+                            className="btn btn-sm btn-ghost"
+                        >
+                            {theme === "light" ? "🌙" : "☀️"}
+                        </button>
 
-                                data-tip="CivicCare Home" end><img src="https://i.ibb.co.com/7d0qMChV/image.png" className='w-12 h-10 md:h-8 ' alt="CivicCare Home" /><span className='inline md:hidden'>CivicCare Home</span></NavLink>
-                        </li>
+                    </div>
 
+                    <ul className="menu p-4 space-y-2 text-base-content">
+
+                        {/* Dashboard Home */}
                         <li>
-                            <NavLink to="/dashboard" className={({ isActive }) =>
-                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                    : ""
-                                }`}
-
+                            <NavLink
+                                to="/dashboard"
+                                className={navItemStyle}
                                 onClick={closeDrawer}
-
-                                data-tip="Dashboard Home" end>
-                                {/* Home icon */}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-8"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                                <span className="is-drawer-close:hidden">Dashboard Home</span>
+                                end
+                            >
+                                <MdReportProblem className="size-5" />
+                                Dashboard Home
                             </NavLink>
                         </li>
 
-                        {/* User related links */}
-
-                        {
-                            (role === "user" || role === "premiumUser") && <>
-
-                                <li >
-                                    <NavLink to="/dashboard/my-issues" className={({ isActive }) =>
-                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                            : ""
-                                        }`}
-
+                        {/* USER */}
+                        {(role === "user" || role === "premiumUser") && (
+                            <>
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/my-issues"
+                                        className={navItemStyle}
                                         onClick={closeDrawer}
-
-                                        data-tip="My Issues" end>
-                                        <MdReportProblem className='w-8 h-8' />
-                                        <span className="is-drawer-close:hidden">My Issues</span>
+                                    >
+                                        <MdReportProblem className="size-5" />
+                                        My Issues
                                     </NavLink>
                                 </li>
-
 
                                 <li>
-
-                                    <NavLink to="/dashboard/allPayments-history" className={({ isActive }) =>
-                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                            : ""
-                                        }`}
-
+                                    <NavLink
+                                        to="/dashboard/allPayments-history"
+                                        className={navItemStyle}
                                         onClick={closeDrawer}
-
-                                        data-tip="Payment History" end>
-                                        <FaRegCreditCard className='w-8 h-8' />
-                                        <span className="is-drawer-close:hidden">Payment History</span>
+                                    >
+                                        <FaRegCreditCard className="size-5" />
+                                        Payment History
                                     </NavLink>
                                 </li>
-
-
-
                             </>
-                        }
+                        )}
 
-                        {/* Staff related dashboard links */}
+                        {/* STAFF */}
+                        {role === "staff" && (
+                            <li>
+                                <NavLink
+                                    to="/dashboard/staff-assigned-issues"
+                                    className={navItemStyle}
+                                    onClick={closeDrawer}
+                                >
+                                    <MdReportProblem className="size-5" />
+                                    Assigned Issues
+                                </NavLink>
+                            </li>
+                        )}
 
-                        {
-                            (role === "staff") && <>
-
-                                <li >
-                                    <NavLink to="/dashboard/staff-assigned-issues" className={({ isActive }) =>
-                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                            : ""
-                                        }`}
-
+                        {/* ADMIN */}
+                        {role === "admin" && (
+                            <>
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/admin-all-issues"
+                                        className={navItemStyle}
                                         onClick={closeDrawer}
-
-                                        data-tip="Assigned Issues" end>
-                                        <MdReportProblem className='w-8 h-8' />
-                                        <span className="is-drawer-close:hidden">Assigned Issues</span>
+                                    >
+                                        <MdReportProblem className="size-5" />
+                                        All Issues
                                     </NavLink>
                                 </li>
-
-                            </>
-                        }
-
-
-
-                        {/* Admin related dashboard links */}
-
-                        {
-                            (role === "admin") && <>
-
-                                <li >
-                                    <NavLink to="/dashboard/admin-all-issues" className={({ isActive }) =>
-                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                            : ""
-                                        }`}
-
-                                        onClick={closeDrawer}
-
-                                        data-tip="All Issues" end>
-                                        <MdReportProblem className='w-8 h-8' />
-                                        <span className="is-drawer-close:hidden">All Issues</span>
-                                    </NavLink>
-                                </li>
-
-                                <li >
-                                    <NavLink to="/dashboard/addStaff" className={({ isActive }) =>
-                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                            : ""
-                                        }`}
-
-                                        onClick={closeDrawer}
-
-                                        data-tip="Add & Manage Staff" end>
-                                        <HiUserAdd className='w-8 h-8' />
-                                        <span className="is-drawer-close:hidden">Add &Manage Staff</span>
-
-                                    </NavLink>
-                                </li>
-
-                                <li >
-                                    <NavLink to="/dashboard/manage-users" className={({ isActive }) =>
-                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                            : ""
-                                        }`}
-
-                                        onClick={closeDrawer}
-
-                                        data-tip="Manage users" end>
-
-                                        <LuUserCog className='w-8 h-8' />
-                                        <span className="is-drawer-close:hidden">Manage Users</span>
-
-                                    </NavLink>
-                                </li>
-
-
 
                                 <li>
-
-                                    <NavLink to="/dashboard/allPayments-history" className={({ isActive }) =>
-                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                            : ""
-                                        }`}
-
+                                    <NavLink
+                                        to="/dashboard/addStaff"
+                                        className={navItemStyle}
                                         onClick={closeDrawer}
-
-                                        data-tip="Payment History" end>
-                                        <FaRegCreditCard className='w-8 h-8' />
-                                        <span className="is-drawer-close:hidden">Payment History</span>
+                                    >
+                                        <HiUserAdd className="size-5" />
+                                        Add & Manage Staff
                                     </NavLink>
                                 </li>
 
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/manage-users"
+                                        className={navItemStyle}
+                                        onClick={closeDrawer}
+                                    >
+                                        <LuUserCog className="size-5" />
+                                        Manage Users
+                                    </NavLink>
+                                </li>
 
-
-
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/allPayments-history"
+                                        className={navItemStyle}
+                                        onClick={closeDrawer}
+                                    >
+                                        <FaRegCreditCard className="size-5" />
+                                        Payment History
+                                    </NavLink>
+                                </li>
                             </>
-                        }
+                        )}
 
-
-                        {/* Profile */}
+                        {/* PROFILE */}
                         <li>
-
-                            <NavLink to="/dashboard/profile" className={({ isActive }) =>
-                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                    : ""
-                                }`}
-
+                            <NavLink
+                                to="/dashboard/profile"
+                                className={navItemStyle}
                                 onClick={closeDrawer}
-
-                                data-tip="Your profile" end>
-                                <FaUser className='w-8 h-8' />
-                                <span className="is-drawer-close:hidden">Profile</span>
+                            >
+                                <FaUser className="size-5" />
+                                Profile
                             </NavLink>
-
                         </li>
 
+                        {/* Divider */}
+                        <div className="border-t border-base-300 pt-4 space-y-2">
 
+                            <li>
+                                <NavLink
+                                    to="/dashboard/settings"
+                                    className={navItemStyle}
+                                    onClick={closeDrawer}
+                                >
+                                    <FiSettings className="size-5" />
+                                    Settings
+                                </NavLink>
+                            </li>
 
+                            <li>
+                                <button
+                                    onClick={handleLogout}
+                                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-error hover:bg-error/10 transition-all duration-200 w-full"
+                                >
+                                    <FiLogOut className="size-5" />
+                                    Logout
+                                </button>
+                            </li>
 
-
-                        {/* List item */}
-                        <li>
-                            <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
-                                {/* Settings icon */}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-8"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
-                                <span className="is-drawer-close:hidden">Settings</span>
-                            </button>
-                        </li>
+                        </div>
 
                     </ul>
+
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 

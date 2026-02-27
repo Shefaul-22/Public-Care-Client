@@ -23,7 +23,7 @@ const IssueCard = ({ issue, user}) => {
 
     return (
 
-        <div className="card bg-base-200 shadow-lg ">
+        <div className="card bg-base-100 shadow-lg ">
 
             <div className=" relative">
                 <img
@@ -51,6 +51,7 @@ const IssueCard = ({ issue, user}) => {
                         }
                     >
                         {issue.priority}
+                        
                     </span>
                 </div>
             </div>
