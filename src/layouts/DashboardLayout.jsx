@@ -57,7 +57,7 @@ const DashboardLayout = () => {
 
     return (
 
-        <div className="drawer lg:drawer-open min-h-screen w-full bg-base-200">
+        <div className="drawer lg:drawer-open min-h-screen w-full bg-base-100">
 
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
@@ -112,7 +112,7 @@ const DashboardLayout = () => {
                         {/* DaisyUI Toggle */}
                         <button
                             onClick={toggleTheme}
-                            className="btn btn-sm btn-ghost"
+                            className="btn btn-md btn-ghost"
                         >
                             {theme === "light" ? "🌙" : "☀️"}
                         </button>

@@ -26,11 +26,13 @@ const SocialLogin = () => {
                 // console.log(user);
 
                 const userInfo = {
+                    
                     uid: user.uid,
                     email: user.email,
                     displayName: user.displayName,
                     photoURL: user.photoURL,
                     provider: user.providerData[0]?.providerId || 'google',
+
                 };
 
                 try {

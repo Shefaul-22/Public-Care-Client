@@ -3,11 +3,11 @@ import { useState } from "react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import Loading from "../../../../components/Loading/Loading";
 import Swal from "sweetalert2";
-import useRole from "../../../../hooks/useRole";
+
 
 const AssignStaffModal = ({ issue, close }) => {
 
-  const {roleLoading} = useRole();
+  
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [staffId, setStaffId] = useState("");
@@ -43,7 +43,7 @@ const AssignStaffModal = ({ issue, close }) => {
     close();
   };
 
-  if(isLoading || roleLoading) return <Loading />
+  if(isLoading ) return <Loading />
 
   return (
     <dialog open className="modal">
