@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { NavLink, Outlet, useMatches } from 'react-router';
+import { Link, NavLink, Outlet, useMatches } from 'react-router';
 
 import { FaRegCreditCard, FaUser } from 'react-icons/fa';
 import { MdReportProblem } from 'react-icons/md';
@@ -14,9 +14,9 @@ import Loading from '../components/Loading/Loading';
 
 const DashboardLayout = () => {
 
-    const { role ,roleLoading} = useRole();
+    const { role, roleLoading } = useRole();
     // console.log(role);
-    const { logOutUser } = UseAuth();
+    const { user, logOutUser } = UseAuth();
     const { theme, toggleTheme } = useTheme();
 
     const closeDrawer = () => {
@@ -53,7 +53,7 @@ const DashboardLayout = () => {
             : "text-base-content hover:bg-base-200"
         }`;
 
-        if(roleLoading) return <Loading></Loading>
+    if (roleLoading) return <Loading></Loading>
 
     return (
 
@@ -83,8 +83,9 @@ const DashboardLayout = () => {
                         </svg>
                     </label>
 
-                    <div className="text-xl font-semibold capitalize text-base-content">
-                         Dashboard
+                    <div className="text-2xl md:text-4xl py-2 font-semibold capitalize text-base-content ">
+
+                        <h2 className="text-3xl font-bold">Welcome back, <span className="text-primary">{user?.displayName}</span></h2>
                     </div>
 
                 </nav>
@@ -105,9 +106,12 @@ const DashboardLayout = () => {
                     {/* ===== SIDEBAR HEADER ===== */}
                     <div className="flex items-center justify-between px-4 py-4 border-b border-base-300">
 
-                        <h2 className="text-lg font-bold text-primary">
-                            CivicCare
-                        </h2>
+                        <div>
+                            <Link to="/" className=" cursor-pointer text-lg md:text-xl font-bold text-blue-700 hover:text-blue-600 ">
+                                CivicCare Home
+                            </Link>
+
+                        </div>
 
                         {/* DaisyUI Toggle */}
                         <button

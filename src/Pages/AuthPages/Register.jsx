@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaUser, FaEnvelope, FaLock, FaCamera } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router';
 import SocialLogin from '../../components/Shared/SocialLogin';
 import Logo from '../../components/Shared/Logo';
@@ -9,219 +9,192 @@ import axios from 'axios';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 
-
 const Register = () => {
-
-    const [showPassword, setShowPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState(false);
     const { registerUser, UpdateUserProfile } = UseAuth();
-
     const { register, handleSubmit, formState: { errors } } = useForm();
-
     const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
-
     const location = useLocation();
-    // console.log("In register page ", location);
 
-    const handleRegister = (data) => {
-
+    const handleRegister = async (data) => {
         Swal.fire({
-            title: "Please Wait",
-            text: "Account is creating...",
-            icon: "info",
+            title: "Creating Account...",
+            color: 'var(--bc)',
+            background: 'var(--b1)',
             showConfirmButton: false,
-            allowOutsideClick: false
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
         });
 
-        // console.log("after register", data);
-        // console.log("after register", data, data.photo[0]);
-        const profileImg = data.photo[0];
+        try {
+            const profileImg = data.photo[0];
+            const result = await registerUser(data.email, data.password);
 
-        registerUser(data.email, data.password)
-            .then(result => {
-                console.log(result.user);
-                // store the image and get the photo url
-                const formData = new FormData();
-                formData.append('image', profileImg)
+            const formData = new FormData();
+            formData.append('image', profileImg);
+            const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`;
+            const imgRes = await axios.post(image_API_URL, formData);
+            const photoURL = imgRes.data.data.url;
 
-                const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_HOST_KEY}`
+            const userInfo = {
+                uid: result.user.uid,
+                email: data.email,
+                displayName: data.name,
+                photoURL: photoURL
+            };
+            await axiosSecure.post('/users', userInfo);
+            await UpdateUserProfile({ displayName: data.name, photoURL: photoURL });
 
-                axios.post(image_API_URL, formData)
-                    .then(res => {
+            Swal.fire({
+                icon: "success",
+                title: "Welcome!",
+                text: "Registration Successful.",
+                timer: 2000,
+                showConfirmButton: false
+            });
 
-                        const photoURL = res.data.data.url;
-                        // console.log(photoURL);
+            setTimeout(() => {
+                navigate("/login", { state: location.state });
+            }, 2000);
 
-                        // create user in the database
-                        const userInfo = {
-                            uid: result.user.uid,
-                            email: data.email,
-                            displayName: data.name,
-                            photoURL: photoURL
-                        }
-                        axiosSecure.post('/users', userInfo)
-                            .then(res => {
-                                if (res.data.insertedId) {
-                                    console.log('user created in the database', res.data);
-                                }
-                            })
-
-
-                        // console.log('after image upload', res);
-                        // console.log('after image upload', res.data.data.url);
-                        // update the user profile
-                        const userProfile = {
-                            displayName: data.name,
-                            photoURL: photoURL,
-                        }
-
-                        UpdateUserProfile(userProfile)
-                            .then(() => {
-                                // console.log('userProfile updated done');
-
-                                // Swal.fire(
-                                //     "Success",
-                                //     "Registration Successfull",
-                                //     "success"
-                                // )
-
-                                Swal.fire({
-                                    title: "Success",
-                                    text: "Registration Successful! Please Login .",
-                                    icon: "success",
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-
-                                navigate("/login", {
-                                    state: location.state
-                                });
-                            })
-                            .catch(error => {
-                                console.log(error)
-                                Swal.fire({
-                                    title: "Error",
-                                    text: "Registration Failed! Try again",
-                                    icon: "error",
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-
-                            })
-                    })
-
-
-
-            })
-            .catch(error => {
-                console.log(error);
-            })
-
-    }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.message || "Something went wrong!"
+            });
+        }
+    };
 
     return (
-        <div>
-
-            <Logo></Logo>
-
-            <div className='space-y-2 my-5 md:7'>
-                <h2 className='font-extrabold text-2xl md:text-4xl'>Create an Account</h2>
-                <p>Register with CivicCare</p>
+        <div className="w-full animate-in fade-in duration-700">
+            {/* Logo & Header */}
+            <div className="flex flex-col items-center mb-8">
+                <div className="transform hover:scale-110 transition-transform duration-300">
+                    <Logo />
+                </div>
+                <h2 className='font-black text-3xl text-base-content mt-4 tracking-tight'>Create Account</h2>
+                <p className='text-base-content/60 font-medium'>Join the CivicCare community</p>
             </div>
 
-            <form onSubmit={handleSubmit(handleRegister)}>
-                <fieldset className="fieldset">
+            <form onSubmit={handleSubmit(handleRegister)} className="space-y-5">
 
-                    {/* Name */}
-                    <label className="label font-medium text-gray-700  text-[14px]">Name</label>
-                    <input type="text" className="input input-primary w-full md:w-2/3"
-                        {...register('name', { required: true })}
-                        placeholder="Your name" />
+                {/* Name Field */}
+                <div className="form-control">
+                    <label className="label py-1">
+                        <span className="label-text font-bold text-base-content/70 uppercase text-[10px] tracking-widest">Full Name</span>
+                    </label>
+                    <div className="relative group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 group-focus-within:text-[#fa0bd2] transition-colors">
+                            <FaUser />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="John Doe"
+                            className={`input input-bordered w-full pl-12 bg-base-200/50 border-base-300 focus:border-[#fa0bd2] focus:ring-2 focus:ring-[#fa0bd2]/20 transition-all ${errors.name ? 'border-error' : ''}`}
+                            {...register('name', { required: "Name is required" })}
+                        />
+                    </div>
+                    {errors.name && <span className="text-error text-xs mt-1 ml-1">{errors.name.message}</span>}
+                </div>
 
-                    {errors.name?.type === "required" && (
-                        <p className='text-red-500'>Name is required</p>
-                    )}
+                {/* Photo Upload Field */}
+                <div className="form-control">
+                    <label className="label py-1">
+                        <span className="label-text font-bold text-base-content/70 uppercase text-[10px] tracking-widest">Profile Photo</span>
+                    </label>
+                    <div className="relative group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 group-focus-within:text-[#fa0bd2] transition-colors z-10">
+                            <FaCamera />
+                        </div>
+                        <input
+                            type="file"
+                            accept='image/*'
+                            className="file-input file-input-bordered w-full pl-12 bg-base-200/50 border-base-300 focus:border-[#fa0bd2] file:bg-[#fa0bd2] file:text-white file:border-none file:mr-4"
+                            {...register('photo', { required: "Photo is required" })}
+                        />
+                    </div>
+                    {errors.photo && <span className="text-error text-xs mt-1 ml-1">{errors.photo.message}</span>}
+                </div>
 
-                    {/* Photo image field */}
-                    <label className="label font-medium text-gray-700 text-[14px]">Upload an image</label>
+                {/* Email Field */}
+                <div className="form-control">
+                    <label className="label py-1">
+                        <span className="label-text font-bold text-base-content/70 uppercase text-[10px] tracking-widest">Email Address</span>
+                    </label>
+                    <div className="relative group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 group-focus-within:text-[#fa0bd2] transition-colors">
+                            <FaEnvelope />
+                        </div>
+                        <input
+                            type="email"
+                            placeholder="hello@example.com"
+                            className={`input input-bordered w-full pl-12 bg-base-200/50 border-base-300 focus:border-[#fa0bd2] focus:ring-2 focus:ring-[#fa0bd2]/20 transition-all ${errors.email ? 'border-error' : ''}`}
+                            {...register('email', { required: "Email is required" })}
+                        />
+                    </div>
+                    {errors.email && <span className="text-error text-xs mt-1 ml-1">{errors.email.message}</span>}
+                </div>
 
-                    <input
-
-                        type="file"
-                        accept='image/*'
-
-                        {...register('photo')}
-                        className="file-input input-primary w-full md:w-2/3"
-                        placeholder="Your Photo" />
-
-                    {errors.name?.type === "required" && (
-                        <p className='text-red-500'>Photo is required</p>
-                    )}
-
-                    {/* email */}
-                    <label className="label font-medium text-gray-700 text-[14px]">Email</label>
-                    <input type="email" className="input input-primary w-full md:w-2/3"
-                        {...register('email', { required: true })}
-                        placeholder="example@email.com" />
-
-                    {errors.email?.type === "required" && (
-                        <p className='text-red-500'>Email is required</p>
-                    )}
-
-
-                    {/* password */}
-                    <label className="label font-medium text-gray-700 text-[14px]">Password</label>
-                    <div className="relative w-full md:w-2/3">
+                {/* Password Field */}
+                <div className="form-control">
+                    <label className="label py-1">
+                        <span className="label-text font-bold text-base-content/70 uppercase text-[10px] tracking-widest">Secure Password</span>
+                    </label>
+                    <div className="relative group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 group-focus-within:text-[#fa0bd2] transition-colors">
+                            <FaLock />
+                        </div>
                         <input
                             type={showPassword ? "text" : "password"}
-                            className="input w-full input-primary  pr-10"
-                            placeholder="Password"
+                            placeholder="••••••••"
+                            className={`input input-bordered w-full pl-12 pr-12 bg-base-200/50 border-base-300 focus:border-[#fa0bd2] focus:ring-2 focus:ring-[#fa0bd2]/20 transition-all ${errors.password ? 'border-error' : ''}`}
                             {...register('password', {
-                                required: true,
-                                minLength: 6,
-                                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/,
+                                required: "Password is required",
+                                minLength: { value: 6, message: "At least 6 characters" },
+                                pattern: {
+                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/,
+                                    message: "Must include Upper, Lower, Number & Special"
+                                }
                             })}
                         />
-
-                        <span
-                            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+                        <button
+                            type="button"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-base-content/30 hover:text-[#fa0bd2] transition-colors"
                             onClick={() => setShowPassword(!showPassword)}
                         >
-                            {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-                        </span>
+                            {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                        </button>
                     </div>
+                    {errors.password && <span className="text-error text-xs mt-1 ml-1 leading-tight block">{errors.password.message}</span>}
+                </div>
 
-
-                    {
-                        errors.password?.type === 'required' && <p className='text-red-500'>Password is Required</p>
-                    }
-
-
-                    {
-                        errors.password?.type === 'minLength' && <p className='text-red-500'>Password must be six characters or Longer</p>
-                    }
-                    {
-                        errors.password?.type === 'pattern' && <p className='text-red-500'>Password must include uppercase, lowercase, number & special character</p>
-                    }
-
-                    <button className="btn bg-primary text-white font-semibold mt-4 w-full md:w-2/3" >Register</button>
-                </fieldset>
-
+                {/* Register Button */}
+                <button className="btn w-full bg-gradient-to-r from-[#fa0bd2] to-[#b00794] hover:from-[#d109ae] hover:to-[#8a0674] text-white border-none font-bold text-lg shadow-xl shadow-[#fa0bd2]/20 mt-4 h-14 rounded-xl normal-case transition-all active:scale-95">
+                    Create My Account
+                </button>
             </form>
 
+            {/* Footer Links */}
+            <div className='mt-10 text-center space-y-6'>
+                <p className='text-base-content/60 font-medium'>
+                    Already a member?
+                    <Link
+                        state={location.state}
+                        to="/login"
+                        className='text-[#fa0bd2] font-black ml-2 hover:underline underline-offset-4 decoration-2'
+                    >
+                        Sign In
+                    </Link>
+                </p>
 
+                <div className="divider text-[10px] uppercase font-bold tracking-[0.2em] opacity-40">Or continue with</div>
 
-            <div className='w-full md:w-2/3 my-2'>
-                <p>Already have an Account. <Link
-
-                    state={location.state}
-
-                    to="/login" className='text-blue-500 text-[18px] underline mb-2'>Login</Link></p>
-                <p className='text-center text-xl font-semibold'>OR</p>
+                <div className="pt-2">
+                    <SocialLogin />
+                </div>
             </div>
-
-            <SocialLogin></SocialLogin>
-
         </div>
     );
 };

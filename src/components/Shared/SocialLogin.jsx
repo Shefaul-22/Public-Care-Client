@@ -6,92 +6,83 @@ import { useLocation, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 
 const SocialLogin = () => {
-
-    // const handleGoogleLogin = () =>{
-    //     console.log("Handle google login clicked");
-    // }
     const { signInWithGoogle } = UseAuth();
     const axiosSecure = useAxiosSecure();
-
     const location = useLocation();
-    // console.log('location in social', location);
-
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
         signInWithGoogle()
             .then(async (result) => {
-
                 const user = result.user;
-                // console.log(user);
-
                 const userInfo = {
-                    
                     uid: user.uid,
                     email: user.email,
                     displayName: user.displayName,
                     photoURL: user.photoURL,
                     provider: user.providerData[0]?.providerId || 'google',
-
                 };
 
                 try {
-
                     const res = await axiosSecure.post('/users', userInfo);
 
-                    if (res.data?.message === 'user exists') {
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Welcome back!',
-                            text: 'You already have an account. Logged in successfully.',
-                            timer: 1800,
-                            showConfirmButton: false
-                        });
-
-
-                    } else {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Login Successful',
-                            text: 'Account created successfully.',
-                            timer: 1800,
-                            showConfirmButton: false
-                        });
-                    }
+                    Swal.fire({
+                        icon: res.data?.message === 'user exists' ? 'info' : 'success',
+                        title: res.data?.message === 'user exists' ? 'Welcome back!' : 'Login Successful',
+                        text: res.data?.message === 'user exists' ? 'Logged in successfully.' : 'Account created successfully.',
+                        timer: 1800,
+                        showConfirmButton: false,
+                        background: 'var(--b1)',
+                        color: 'var(--bc)'
+                    });
 
                     navigate(location.state || '/', { replace: true });
 
                 } catch (error) {
-                    console.error(error)
                     Swal.fire({
                         icon: 'error',
-                        title: 'Something went wrong',
-                        text: 'Please try again later.',
+                        title: 'Oops...',
+                        text: 'Something went wrong on our server.',
+                        background: 'var(--b1)',
+                        color: 'var(--bc)'
                     });
+                    console.error(error)
                 }
-
             })
             .catch(error => {
-                console.error('Google sign-in failed:', error);
-
                 Swal.fire({
                     icon: 'error',
-                    title: 'Google Login Failed',
+                    title: 'Login Failed',
                     text: error.message,
+                    background: 'var(--b1)',
+                    color: 'var(--bc)'
                 });
             });
     };
 
-
-
     return (
-        <div className='w-full md:w-2/3'>
+        <div className='w-full flex justify-center'>
+            <button
+                onClick={handleGoogleLogin}
+                className="group relative flex items-center justify-center gap-3 w-full max-w-sm h-12 
+                           bg-base-200/50 hover:bg-base-300/80 
+                           border border-base-300 hover:border-primary/30 
+                           rounded-xl transition-all duration-300 
+                           active:scale-95 shadow-sm hover:shadow-md cursor-pointer"
+            >
+                {/* Google Icon Wrapper */}
+                <div className="bg-white p-1.5 rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-300">
+                    <FcGoogle size={20} />
+                </div>
 
-            <button onClick={handleGoogleLogin} className="btn w-full bg-[#d4d7dd] text-black border-[#e5e5e5]">
-                <FcGoogle size={22}></FcGoogle>
-                Sign In with Google
+                {/* Button Text */}
+                <span className="font-bold text-base-content/80 group-hover:text-base-content">
+                    Continue with Google
+                </span>
+
+                {/* Subtle Glow Effect */}
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
             </button>
-
         </div>
     );
 };

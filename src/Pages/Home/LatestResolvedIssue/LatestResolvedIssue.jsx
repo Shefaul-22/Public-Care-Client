@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import UseAuth from "../../../hooks/UseAuth";
+// import UseAuth from "../../../hooks/UseAuth";
 // import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 
@@ -15,7 +15,7 @@ const LatestResolvedIssues = () => {
 
     const axios = UseAxios();
 
-    const {user} = UseAuth();
+    // const {user} = UseAuth();
     
 
     const { data: issues = [], isLoading } = useQuery({
@@ -45,7 +45,7 @@ const LatestResolvedIssues = () => {
                         
                             key={issue._id}
                             issue={issue}
-                            user={user}
+                            
                             
                         />
                     ))}

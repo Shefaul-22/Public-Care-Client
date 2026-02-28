@@ -44,10 +44,10 @@ const IssueCard = ({ issue, user, refetch, axiosSecure }) => {
 
     const handleViewDetails = () => {
 
-        if (!user) {
-            navigate("/login");
-            return;
-        }
+        // if (!user) {
+        //     navigate("/login");
+        //     return;
+        // }
         navigate(`/issues/${issue._id}`);
     };
 

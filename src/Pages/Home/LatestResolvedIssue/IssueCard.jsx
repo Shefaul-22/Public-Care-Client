@@ -5,17 +5,14 @@ import { useNavigate } from 'react-router';
 
 import Swal from "sweetalert2";
 
-const IssueCard = ({ issue, user}) => {
+const IssueCard = ({ issue}) => {
 
     // console.log(user,issue);
 
     const navigate = useNavigate();
 
     const handleViewDetails = () => {
-        if (!user) {
-            navigate("/login");
-            return;
-        }
+        
         navigate(`/issues/${issue._id}`);
     };
 
@@ -51,7 +48,7 @@ const IssueCard = ({ issue, user}) => {
                         }
                     >
                         {issue.priority}
-                        
+
                     </span>
                 </div>
             </div>

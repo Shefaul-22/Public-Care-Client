@@ -58,7 +58,7 @@ const ManageUsers = () => {
             {/* Header */}
             <div>
                 <h2 className="text-2xl md:text-3xl font-bold text-base-content">
-                    Manage Users
+                    Manage <span className='text-[#fa0bd2]'>Users</span>
                 </h2>
                 <p className="text-sm text-base-content/70">
                     View, block and manage system users

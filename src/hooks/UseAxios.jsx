@@ -4,7 +4,8 @@ import axios from 'axios';
 
 
 const axiosInstance = axios.create({
-    baseURL: 'https://civic-care-server-tau.vercel.app'
+    // baseURL: 'https://civic-care-server-tau.vercel.app'
+    baseURL: 'http://localhost:3000'
 })
 
 const UseAxios = () => {

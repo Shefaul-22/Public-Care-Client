@@ -16,6 +16,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useRole from "../../../hooks/useRole";
 import Loading from "../../../components/Loading/Loading";
 import InvoicePDF from "../../../components/PaymentInvoice/InvoicePDF";
+import { FaMoneyBillWave } from "react-icons/fa";
 
 const AllPaymentsHistory = () => {
     const { role } = useRole();
@@ -57,7 +58,7 @@ const AllPaymentsHistory = () => {
             {/* Header */}
             <div>
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-base-content">
-                    All Payments
+                    All <span className='text-[#fa0bd2]'>Payments</span>
                 </h2>
                 <p className="text-sm text-base-content/70">
                     View and download payment history
@@ -168,41 +169,52 @@ const AllPaymentsHistory = () => {
             </div>
 
             {/* Bar Chart */}
-            {chartData.length > 0 && (
-                <div className="bg-base-100 dark:bg-base-200 rounded-xl shadow p-5">
-                    <h3 className="text-xl font-semibold mb-4">Monthly Payments</h3>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={chartData}>
-                            {/* Grid */}
-                            <CartesianGrid strokeDasharray="3 3" stroke="var(--tw-prose-hr)" />
-
-                            {/* X-Axis */}
-                            <XAxis dataKey="month" />
-
-                            {/* Y-Axis */}
-                            <YAxis />
-
-                            {/* Tooltip */}
-                            <Tooltip
-                                wrapperClassName="bg-base-100 shadow-md rounded p-2"
-                                contentStyle={{
-                                    backgroundColor: 'var(--tw-prose-body)',
-                                    borderRadius: '0.5rem',
-                                    border: 'none'
-                                }}
-                            />
-
-                            {/* Legend */}
-                            <Legend />
-
-                            {/* Bar */}
-                            <Bar
-                                dataKey="total"
-                                fill="#10b981"
-                                radius={[4, 4, 0, 0]}
-                            />
-                        </BarChart>
-                    </ResponsiveContainer>
+            {chartData && chartData.length > 0 && (
+                <div className="card bg-base-100 shadow-xl border border-base-300 dark:border-slate-700 p-4">
+                    <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+                        <FaMoneyBillWave className="text-[#fa0bd2]" /> Monthly Payment Collection
+                    </h3>
+                    <div className="h-72 w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={chartData}>
+                                <CartesianGrid
+                                    strokeDasharray="3 3"
+                                    vertical={false}
+                                    stroke="#888"
+                                    opacity={0.1}
+                                />
+                                <XAxis
+                                    dataKey="month"
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fill: 'currentColor', fontSize: 12 }}
+                                />
+                                <YAxis
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fill: 'currentColor', fontSize: 12 }}
+                                />
+                                <Tooltip
+                                    cursor={{ fill: 'rgba(250, 11, 210, 0.1)' }}
+                                    contentStyle={{
+                                        borderRadius: '12px',
+                                        backgroundColor: 'hsl(var(--b1))',
+                                        border: '1px solid hsl(var(--bc)/0.1)',
+                                        color: 'currentColor'
+                                    }}
+                                />
+                                <Legend
+                                    formatter={(value) => <span className="text-base-content opacity-80">{value}</span>}
+                                />
+                                <Bar
+                                    dataKey="total"
+                                    fill="#fa0bd2"
+                                    radius={[4, 4, 0, 0]}
+                                    barSize={35}
+                                />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
             )}
 

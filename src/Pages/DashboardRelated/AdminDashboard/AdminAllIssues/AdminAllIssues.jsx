@@ -46,7 +46,7 @@ const AdminAllIssues = () => {
             {/* Header */}
             <div>
                 <h2 className="text-2xl md:text-3xl font-bold text-base-content">
-                    All Issues
+                    All <span className='text-[#fa0bd2]'>Reported Issues</span>
                 </h2>
                 <p className="text-sm text-base-content/70">
                     Manage and monitor all reported issues
